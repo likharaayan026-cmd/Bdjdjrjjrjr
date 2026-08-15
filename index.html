@@ -134,20 +134,6 @@
             color: var(--text-secondary);
         }
 
-        .header-wallet-badge {
-            background: var(--success-light);
-            color: var(--success);
-            padding: 7px 14px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-            border: 1px solid rgba(25, 135, 84, 0.2);
-        }
-
         /* Carousel 3D Dynamic Slider */
         .carousel-container {
             height: 270px;
@@ -285,16 +271,12 @@
             position: absolute;
             top: 8px;
             right: 8px;
-            background: rgba(0, 0, 0, 0.75);
+            background: var(--success);
             color: white;
             padding: 4px 10px;
             border-radius: 12px;
             font-size: 11px;
             font-weight: 700;
-        }
-
-        .movie-card-tag.purchased {
-            background: var(--success);
         }
 
         /* Auth Screen Guard */
@@ -456,54 +438,7 @@
             margin-top: 15px;
         }
 
-        /* Redesigned Clean Wallet Card */
-        .wallet-card-redesign {
-            background: linear-gradient(135deg, #198754, #115c38);
-            border-radius: 16px;
-            padding: 20px;
-            color: white;
-            text-align: center;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 20px rgba(25, 135, 84, 0.25);
-        }
-
-        .wallet-card-title {
-            font-size: 13px;
-            opacity: 0.9;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-bottom: 4px;
-        }
-
-        .wallet-card-amount {
-            font-size: 32px;
-            font-weight: 800;
-        }
-
-        .quick-amounts {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
-        }
-
-        .chip-amount {
-            flex: 1;
-            padding: 8px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            background: var(--bg-primary);
-            text-align: center;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .chip-amount:hover {
-            border-color: var(--success);
-            color: var(--success);
-        }
-
-        /* Redesigned Profile & Developer Section */
+        /* Profile & Developer Section */
         .profile-header-card {
             background: var(--bg-primary);
             border-radius: 16px;
@@ -604,7 +539,7 @@
             <div style="text-align: center; margin-bottom: 20px;">
                 <div style="font-size: 34px; color: var(--accent); margin-bottom: 4px;"><i class="fas fa-play-circle"></i></div>
                 <h2 style="font-size: 22px; font-weight: 800;">Figo Movies</h2>
-                <p style="font-size: 12px; color: var(--text-secondary);">Sign up to get ₹1 instant free bonus!</p>
+                <p style="font-size: 12px; color: var(--text-secondary);">Watch Unlimited Free Movies!</p>
             </div>
 
             <div class="auth-tabs">
@@ -659,7 +594,7 @@
                         <input type="password" class="auth-input" id="signup-password" placeholder="Password" required>
                     </div>
                 </div>
-                <button type="submit" class="btn"><i class="fas fa-gift"></i> Create & Claim ₹1 Bonus</button>
+                <button type="submit" class="btn"><i class="fas fa-user-plus"></i> Create Free Account</button>
             </form>
         </div>
     </div>
@@ -671,9 +606,6 @@
             <div class="header-search">
                 <input type="text" id="search-input" placeholder="Search movies..." oninput="filterMovies()">
                 <i class="fas fa-search header-search-icon"></i>
-            </div>
-            <div class="header-wallet-badge" onclick="openWalletModal()">
-                <i class="fas fa-wallet"></i> ₹<span id="top-wallet-val">0</span>
             </div>
         </div>
     </header>
@@ -692,32 +624,6 @@
         <div class="movies-grid" id="movies-grid"></div>
     </main>
 
-    <!-- Redesigned Wallet Modal -->
-    <div class="modal" id="wallet-modal" onclick="handleOutsideClick(event, 'wallet-modal')">
-        <div class="modal-content" style="max-width: 400px; padding: 20px;">
-            <button class="modal-close" onclick="closeModalDirect()"><i class="fas fa-times"></i></button>
-            <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 15px;"><i class="fas fa-wallet" style="color:var(--success)"></i> Digital Wallet</h3>
-            
-            <div class="wallet-card-redesign">
-                <div class="wallet-card-title">Available Balance</div>
-                <div class="wallet-card-amount">₹<span id="modal-wallet-val">0</span></div>
-            </div>
-
-            <div class="input-group">
-                <label class="input-label">Recharge Amount (Min ₹5)</label>
-                <input type="number" class="auth-input" id="wallet-add-amount" placeholder="Enter amount" min="5" value="10" style="padding-left:15px;">
-            </div>
-
-            <div class="quick-amounts">
-                <div class="chip-amount" onclick="setQuickAmount(10)">+ ₹10</div>
-                <div class="chip-amount" onclick="setQuickAmount(50)">+ ₹50</div>
-                <div class="chip-amount" onclick="setQuickAmount(100)">+ ₹100</div>
-            </div>
-
-            <button class="btn btn-success" onclick="initiateWalletRecharge()"><i class="fas fa-plus-circle"></i> Add Money via UPI / Cards</button>
-        </div>
-    </div>
-
     <!-- Movie Detail Modal -->
     <div class="modal" id="movie-modal" onclick="handleOutsideClick(event, 'movie-modal')">
         <div class="modal-content">
@@ -732,19 +638,19 @@
                 <h2 class="modal-title" id="m-title">Movie Title</h2>
                 <div class="modal-meta">
                     <span class="genre-tag" id="m-genre">Action</span>
-                    <span id="m-status-tag" class="genre-tag" style="background:rgba(25,135,84,0.15); color:var(--success); font-weight:700;">Locked (₹1)</span>
+                    <span id="m-status-tag" class="genre-tag" style="background:rgba(25,135,84,0.15); color:var(--success); font-weight:700;">Free Access</span>
                 </div>
                 <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 15px;" id="m-desc">Description text...</p>
 
                 <div class="action-grid">
                     <button class="btn btn-outline" onclick="playTrailer()"><i class="fas fa-video"></i> Trailer</button>
-                    <button class="btn" id="m-main-btn" onclick="handleWatchMovieClick()"><i class="fas fa-unlock-alt"></i> Unlock Movie (₹1)</button>
+                    <button class="btn btn-success" id="m-main-btn" onclick="handleWatchMovieClick()"><i class="fas fa-play"></i> Watch Movie</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Redesigned Settings & Profile Modal with Developer Section -->
+    <!-- Profile Modal -->
     <div class="modal" id="settings-modal" onclick="handleOutsideClick(event, 'settings-modal')">
         <div class="modal-content" style="max-width: 440px; padding: 20px;">
             <button class="modal-close" onclick="closeModalDirect()"><i class="fas fa-times"></i></button>
@@ -763,7 +669,7 @@
                     <i class="fas fa-code"></i> About Developer
                 </div>
                 <div class="developer-desc">
-                    <strong>Aayan Industries</strong> is dedicated to delivering high-performance web applications, video streaming platforms, and secure digital payment tools with smooth UI/UX standards.
+                    <strong>Aayan Industries</strong> is dedicated to delivering high-performance web applications and video streaming platforms with smooth UI/UX standards.
                 </div>
             </div>
 
@@ -776,12 +682,8 @@
     <nav class="bottom-nav">
         <button class="nav-item active" onclick="showHome()"><i class="fas fa-home"></i><span>Home</span></button>
         <button class="nav-item" onclick="focusSearch()"><i class="fas fa-search"></i><span>Search</span></button>
-        <button class="nav-item" onclick="openWalletModal()"><i class="fas fa-wallet"></i><span>Wallet</span></button>
         <button class="nav-item" onclick="openSettings()"><i class="fas fa-user"></i><span>Profile</span></button>
     </nav>
-
-    <!-- Razorpay Checkout SDK -->
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -790,14 +692,14 @@
 
     <script>
         const firebaseConfig = {
-  apiKey: "AIzaSyD9Vv84P-KB1WbbVuQHajRKTDy_T4CPEJc",
-  authDomain: "figo-movie-jdhhfjfifkjfjf.firebaseapp.com",
-  projectId: "figo-movie-jdhhfjfifkjfjf",
-  storageBucket: "figo-movie-jdhhfjfifkjfjf.firebasestorage.app",
-  messagingSenderId: "482191451140",
-  appId: "1:482191451140:web:426005517a55f042864151",
-  measurementId: "G-DW5FG85QRG"
-   };
+            apiKey: "AIzaSyBt3iYcR4SijEJqtrBlH8mNr292vakgJFQ",
+            authDomain: "figo-movies.firebaseapp.com",
+            databaseURL: "https://figo-movies-default-rtdb.firebaseio.com",
+            projectId: "figo-movies",
+            storageBucket: "figo-movies.firebasestorage.app",
+            messagingSenderId: "425238806262",
+            appId: "1:425238806262:web:7d23814e4b550695bb76d7"
+        };
 
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
@@ -867,17 +769,12 @@
         function syncUserData(uid) {
             database.ref('users/' + uid).on('value', (snapshot) => {
                 userData = snapshot.val() || {};
-                const walletBalance = userData.wallet !== undefined ? userData.wallet : 0;
-                document.getElementById('top-wallet-val').textContent = walletBalance;
-                document.getElementById('modal-wallet-val').textContent = walletBalance;
-                
                 const name = userData.name || 'User';
                 document.getElementById('p-name').textContent = name;
                 document.getElementById('p-email').textContent = currentUser.email || 'No email';
                 document.getElementById('p-mobile').textContent = userData.mobile ? 'Mobile: ' + userData.mobile : 'Mobile: Not added';
                 document.getElementById('p-avatar').textContent = name.charAt(0).toUpperCase();
 
-                if (activeMovie) updateMovieModalState();
                 displayMovies(filteredMovies);
             });
         }
@@ -902,7 +799,7 @@
             auth.signInWithEmailAndPassword(email, password).catch(err => alert(err.message));
         });
 
-        // Signup Handler with Automatic ₹1 Signup Bonus
+        // Signup Handler
         document.getElementById('signup-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const name = document.getElementById('signup-name').value.trim();
@@ -918,12 +815,10 @@
                         name: name,
                         email: email,
                         mobile: mobile,
-                        wallet: 1000, // FREE ₹1000 BONUS
-                        purchasedMovies: {},
                         createdAt: Date.now()
                     });
                 })
-                .then(() => alert('Welcome! ₹1000 Free Signup Bonus credited to your wallet.'))
+                .then(() => alert('Account created successfully! Enjoy free movies.'))
                 .catch(err => alert(err.message));
         });
 
@@ -935,7 +830,7 @@
             window.location.href = "https://aayanindustries.shop";
         }
 
-        // Load Movies (Reverse Order: Latest Admin Uploaded Shows First)
+        // Load Movies
         function loadMovies() {
             database.ref('movies').on('value', (snapshot) => {
                 allMovies = [];
@@ -943,7 +838,7 @@
                     snapshot.forEach(child => {
                         let m = child.val();
                         m.id = child.key;
-                        allMovies.unshift(m); // Latest Upload First
+                        allMovies.unshift(m);
                     });
                 }
                 filteredMovies = [...allMovies];
@@ -953,19 +848,14 @@
             });
         }
 
-        function isMoviePurchased(movieId) {
-            return userData.purchasedMovies && userData.purchasedMovies[movieId] === true;
-        }
-
         function displayMovies(movies) {
             const grid = document.getElementById('movies-grid');
             grid.innerHTML = '';
             movies.forEach(movie => {
-                const purchased = isMoviePurchased(movie.id);
                 const card = document.createElement('div');
                 card.className = 'movie-card';
                 card.innerHTML = `
-                    <span class="movie-card-tag ${purchased ? 'purchased' : ''}">${purchased ? 'Unlocked' : '₹1'}</span>
+                    <span class="movie-card-tag">FREE</span>
                     <img src="${movie.poster}" alt="${movie.title}">
                     <div class="movie-card-info">
                         <div class="movie-card-title">${movie.title}</div>
@@ -1003,7 +893,7 @@
             displayMovies(filteredMovies);
         }
 
-        // Movie Detail & Automatic Wallet Deduction
+        // Movie Detail Modal Opening
         function openMovieDetail(movie) {
             activeMovie = movie;
             document.getElementById('m-poster').src = movie.poster;
@@ -1014,30 +904,8 @@
             document.getElementById('m-genre').textContent = movie.genre || 'Movie';
             document.getElementById('m-desc').textContent = movie.description || 'Watch full movie now in HD format!';
 
-            updateMovieModalState();
             document.getElementById('movie-modal').style.display = 'block';
             pushModalState();
-        }
-
-        function updateMovieModalState() {
-            if (!activeMovie) return;
-            const purchased = isMoviePurchased(activeMovie.id);
-            const statusTag = document.getElementById('m-status-tag');
-            const mainBtn = document.getElementById('m-main-btn');
-
-            if (purchased) {
-                statusTag.textContent = 'Unlocked (Lifetime Access)';
-                statusTag.style.background = 'rgba(25,135,84,0.15)';
-                statusTag.style.color = 'var(--success)';
-                mainBtn.className = 'btn btn-success';
-                mainBtn.innerHTML = '<i class="fas fa-play"></i> Watch Full Movie';
-            } else {
-                statusTag.textContent = 'Locked (₹1 Charge)';
-                statusTag.style.background = 'rgba(229,9,20,0.15)';
-                statusTag.style.color = 'var(--accent)';
-                mainBtn.className = 'btn';
-                mainBtn.innerHTML = '<i class="fas fa-lock"></i> Unlock Full Movie (₹1)';
-            }
         }
 
         function playTrailer() {
@@ -1050,36 +918,7 @@
 
         function handleWatchMovieClick() {
             if (!activeMovie) return;
-            if (isMoviePurchased(activeMovie.id)) {
-                embedVideo(activeMovie.playUrl || activeMovie.downloadUrl);
-            } else {
-                autoPurchaseProcess();
-            }
-        }
-
-        // Automatic Wallet Deduction Flow
-        function autoPurchaseProcess() {
-            const currentWallet = userData.wallet || 0;
-            if (currentWallet >= 1) {
-                // Deduct ₹1 automatically from wallet without prompt
-                const newBal = currentWallet - 1;
-                database.ref(`users/${currentUser.uid}/wallet`).set(newBal).then(() => {
-                    unlockMovieInFirebase(activeMovie.id);
-                });
-            } else {
-                // If insufficient wallet balance, ask for Razorpay direct ₹1 payment
-                payViaRazorpay(1, `Unlock ${activeMovie.title}`, () => {
-                    unlockMovieInFirebase(activeMovie.id);
-                });
-            }
-        }
-
-        function unlockMovieInFirebase(movieId) {
-            database.ref(`users/${currentUser.uid}/purchasedMovies/${movieId}`).set(true).then(() => {
-                alert('Movie Unlocked Successfully!');
-                updateMovieModalState();
-                handleWatchMovieClick();
-            });
+            embedVideo(activeMovie.playUrl || activeMovie.downloadUrl);
         }
 
         function embedVideo(url) {
@@ -1105,59 +944,7 @@
             document.getElementById('m-poster').style.display = 'block';
         }
 
-        // Wallet Recharge
-        function openWalletModal() {
-            document.getElementById('wallet-modal').style.display = 'block';
-            pushModalState();
-        }
-
-        function setQuickAmount(amt) {
-            document.getElementById('wallet-add-amount').value = amt;
-        }
-
-        function initiateWalletRecharge() {
-            const amountInput = parseInt(document.getElementById('wallet-add-amount').value);
-            if (isNaN(amountInput) || amountInput < 5) {
-                alert('Minimum wallet add amount is ₹5');
-                return;
-            }
-
-            payViaRazorpay(amountInput, 'Recharge Wallet', () => {
-                const currentBal = userData.wallet || 0;
-                database.ref(`users/${currentUser.uid}/wallet`).set(currentBal + amountInput).then(() => {
-                    alert(`₹${amountInput} added to your wallet!`);
-                    closeModalDirect();
-                });
-            });
-        }
-
-        // Razorpay Helper
-        function payViaRazorpay(amountInRupees, description, onSuccessCallback) {
-            const options = {
-                "key": "rzp_live_T5OZeAeTkrB7YG",
-                "amount": amountInRupees * 100,
-                "currency": "INR",
-                "name": "Figo Movies",
-                "description": description,
-                "handler": function (response) {
-                    if (response.razorpay_payment_id) {
-                        onSuccessCallback(response);
-                    }
-                },
-                "prefill": {
-                    "name": userData.name || "",
-                    "email": currentUser ? currentUser.email : "",
-                    "contact": userData.mobile || ""
-                },
-                "theme": {
-                    "color": "#e50914"
-                }
-            };
-            const rzp = new Razorpay(options);
-            rzp.open();
-        }
-
-        // Automatic Rotating 3D Carousel Slider Fix
+        // Automatic Rotating 3D Carousel Slider
         function initCarousel() {
             const carousel = document.getElementById('carousel');
             carousel.innerHTML = '';
