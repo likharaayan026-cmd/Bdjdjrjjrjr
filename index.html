@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Figo Movies</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --bg-primary: #f4f6f9;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --text-primary: #1a1d20;
+            --text-secondary: #6c757d;
+            --accent: #e50914;
+            --accent-light: #fff0f1;
+            --success: #198754;
+            --success-light: #e8f5e9;
+            --border: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --shadow-lg: rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        /* Splash Screen */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .splash-logo {
+            font-size: 38px;
+            font-weight: 800;
+            color: var(--accent);
+            animation: pulse 1.2s infinite alternate;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .splash-dev {
+            position: absolute;
+            bottom: 35px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(0.96); opacity: 0.85; }
+            to { transform: scale(1.04); opacity: 1; }
+        }
+
+        /* Header */
+        header {
+            background: var(--bg-secondary);
+            padding: 14px 20px;
+            box-shadow: 0 2px 12px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-content {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--accent);
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .header-search {
+            flex: 1;
+            position: relative;
+        }
+
+        .header-search input {
+            width: 100%;
+            padding: 10px 40px 10px 16px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .header-search input:focus {
+            border-color: var(--accent);
+        }
+
+        .header-search-icon {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .header-wallet-badge {
+            background: var(--success-light);
+            color: var(--success);
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            border: 1px solid rgba(25, 135, 84, 0.2);
+        }
+
+        /* Carousel 3D Dynamic Slider */
+        .carousel-container {
+            height: 270px;
+            position: relative;
+            perspective: 1000px;
+            overflow: hidden;
+            margin: 15px 0 0 0;
+        }
+
+        .carousel {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .carousel-item {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 155px;
+            height: 220px;
+            margin-left: -77px;
+            margin-top: -110px;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-item-title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.85));
+            padding: 20px 10px 8px;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* Genre Filters */
+        .genre-section {
+            padding: 10px 20px 0 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .genre-filters {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 8px 0;
+            scrollbar-width: none;
+        }
+
+        .genre-filters::-webkit-scrollbar { display: none; }
+
+        .genre-chip {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            box-shadow: 0 2px 4px var(--shadow);
+        }
+
+        .genre-chip.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        /* Movie Grid */
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 15px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .movie-card {
+            background: var(--bg-card);
+            border-radius: 14px;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 4px 12px var(--shadow);
+            border: 1px solid var(--border);
+            position: relative;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .movie-card:active {
+            transform: scale(0.98);
+        }
+
+        .movie-card img {
+            width: 100%;
+            aspect-ratio: 2/3;
+            object-fit: cover;
+        }
+
+        .movie-card-info {
+            padding: 12px;
+        }
+
+        .movie-card-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .movie-card-tag {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.75);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .movie-card-tag.purchased {
+            background: var(--success);
+        }
+
+        /* Auth Screen Guard */
+        .auth-guard {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(244, 246, 249, 0.95);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .auth-card {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 30px 25px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px var(--shadow-lg);
+            border: 1px solid var(--border);
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            background: var(--bg-primary);
+            padding: 4px;
+            border-radius: 12px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 9px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .auth-tab.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .auth-form { display: none; }
+        .auth-form.active { display: block; }
+
+        .input-group { margin-bottom: 14px; }
+        .input-label { display: block; margin-bottom: 6px; font-size: 12px; font-weight: 700; color: var(--text-secondary); }
+        .input-wrapper { position: relative; }
+        .input-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); }
+        .auth-input {
+            width: 100%;
+            padding: 12px 14px 12px 40px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 14px;
+            outline: none;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 12px;
+            background: var(--accent);
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.2);
+        }
+
+        .btn-success {
+            background: var(--success);
+            box-shadow: 0 4px 12px rgba(25, 135, 84, 0.2);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            box-shadow: none;
+        }
+
+        /* Modals Backdrop & Content */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 15px;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            max-width: 500px;
+            margin: 30px auto;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid var(--border);
+            box-shadow: 0 15px 35px var(--shadow-lg);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.1);
+            border: none;
+            color: var(--text-primary);
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-poster { width: 100%; height: 260px; object-fit: cover; }
+        .video-container { width: 100%; height: 250px; background: black; display: none; }
+        .video-container iframe { width: 100%; height: 100%; border: none; }
+
+        .modal-info { padding: 20px; }
+        .modal-title { font-size: 20px; font-weight: 800; margin-bottom: 8px; color: var(--text-primary); }
+        .modal-meta { display: flex; gap: 8px; margin-bottom: 12px; }
+        .genre-tag { background: var(--bg-primary); padding: 4px 10px; border-radius: 12px; font-size: 12px; color: var(--text-secondary); border: 1px solid var(--border); }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        /* Redesigned Clean Wallet Card */
+        .wallet-card-redesign {
+            background: linear-gradient(135deg, #198754, #115c38);
+            border-radius: 16px;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(25, 135, 84, 0.25);
+        }
+
+        .wallet-card-title {
+            font-size: 13px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 4px;
+        }
+
+        .wallet-card-amount {
+            font-size: 32px;
+            font-weight: 800;
+        }
+
+        .quick-amounts {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .chip-amount {
+            flex: 1;
+            padding: 8px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg-primary);
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .chip-amount:hover {
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        /* Redesigned Profile & Developer Section */
+        .profile-header-card {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .profile-avatar-large {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 10px;
+            font-weight: 800;
+            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.25);
+        }
+
+        .developer-info-box {
+            background: var(--accent-light);
+            border: 1px solid rgba(229, 9, 20, 0.2);
+            border-radius: 14px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .developer-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 6px;
+        }
+
+        .developer-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 100;
+            box-shadow: 0 -2px 10px var(--shadow);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 12px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            border: none;
+            background: transparent;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .nav-item.active { color: var(--accent); }
+
+        @media (min-width: 768px) {
+            .movies-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Splash Screen -->
+    <div class="splash-screen" id="splash-screen">
+        <div class="splash-logo">
+            <i class="fas fa-play-circle"></i> Figo Movies
+        </div>
+        <div class="splash-dev">Developed by Aayan Industries</div>
+    </div>
+
+    <!-- Auth Guard Modal -->
+    <div class="auth-guard" id="auth-guard">
+        <div class="auth-card">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div style="font-size: 34px; color: var(--accent); margin-bottom: 4px;"><i class="fas fa-play-circle"></i></div>
+                <h2 style="font-size: 22px; font-weight: 800;">Figo Movies</h2>
+                <p style="font-size: 12px; color: var(--text-secondary);">Sign up to get ₹1 instant free bonus!</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchTab('login')">Login</button>
+                <button class="auth-tab" onclick="switchTab('signup')">Sign Up</button>
+            </div>
+
+            <form class="auth-form active" id="login-form">
+                <div class="input-group">
+                    <label class="input-label">Email</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" class="auth-input" id="login-email" placeholder="Enter email" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" class="auth-input" id="login-password" placeholder="Enter password" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn"><i class="fas fa-sign-in-alt"></i> Login</button>
+            </form>
+
+            <form class="auth-form" id="signup-form">
+                <div class="input-group">
+                    <label class="input-label">Full Name</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" class="auth-input" id="signup-name" placeholder="Full Name" required>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Email</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" class="auth-input" id="signup-email" placeholder="Email Address">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Mobile Number</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-phone input-icon"></i>
+                        <input type="tel" class="auth-input" id="signup-mobile" placeholder="Mobile Number">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" class="auth-input" id="signup-password" placeholder="Password" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn"><i class="fas fa-gift"></i> Create & Claim ₹1 Bonus</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo"><i class="fas fa-play-circle"></i> Figo Movies</div>
+            <div class="header-search">
+                <input type="text" id="search-input" placeholder="Search movies..." oninput="filterMovies()">
+                <i class="fas fa-search header-search-icon"></i>
+            </div>
+            <div class="header-wallet-badge" onclick="openWalletModal()">
+                <i class="fas fa-wallet"></i> ₹<span id="top-wallet-val">0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Auto-Rotating 3D Slider -->
+        <div class="carousel-container">
+            <div class="carousel" id="carousel"></div>
+        </div>
+
+        <div class="genre-section">
+            <div class="genre-filters" id="genre-filters"></div>
+        </div>
+
+        <div class="movies-grid" id="movies-grid"></div>
+    </main>
+
+    <!-- Redesigned Wallet Modal -->
+    <div class="modal" id="wallet-modal" onclick="handleOutsideClick(event, 'wallet-modal')">
+        <div class="modal-content" style="max-width: 400px; padding: 20px;">
+            <button class="modal-close" onclick="closeModalDirect()"><i class="fas fa-times"></i></button>
+            <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 15px;"><i class="fas fa-wallet" style="color:var(--success)"></i> Digital Wallet</h3>
+            
+            <div class="wallet-card-redesign">
+                <div class="wallet-card-title">Available Balance</div>
+                <div class="wallet-card-amount">₹<span id="modal-wallet-val">0</span></div>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">Recharge Amount (Min ₹5)</label>
+                <input type="number" class="auth-input" id="wallet-add-amount" placeholder="Enter amount" min="5" value="10" style="padding-left:15px;">
+            </div>
+
+            <div class="quick-amounts">
+                <div class="chip-amount" onclick="setQuickAmount(10)">+ ₹10</div>
+                <div class="chip-amount" onclick="setQuickAmount(50)">+ ₹50</div>
+                <div class="chip-amount" onclick="setQuickAmount(100)">+ ₹100</div>
+            </div>
+
+            <button class="btn btn-success" onclick="initiateWalletRecharge()"><i class="fas fa-plus-circle"></i> Add Money via UPI / Cards</button>
+        </div>
+    </div>
+
+    <!-- Movie Detail Modal -->
+    <div class="modal" id="movie-modal" onclick="handleOutsideClick(event, 'movie-modal')">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModalDirect()"><i class="fas fa-times"></i></button>
+            
+            <img src="" id="m-poster" class="modal-poster">
+            <div class="video-container" id="v-container">
+                <iframe id="v-iframe" allowfullscreen></iframe>
+            </div>
+
+            <div class="modal-info">
+                <h2 class="modal-title" id="m-title">Movie Title</h2>
+                <div class="modal-meta">
+                    <span class="genre-tag" id="m-genre">Action</span>
+                    <span id="m-status-tag" class="genre-tag" style="background:rgba(25,135,84,0.15); color:var(--success); font-weight:700;">Locked (₹1)</span>
+                </div>
+                <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 15px;" id="m-desc">Description text...</p>
+
+                <div class="action-grid">
+                    <button class="btn btn-outline" onclick="playTrailer()"><i class="fas fa-video"></i> Trailer</button>
+                    <button class="btn" id="m-main-btn" onclick="handleWatchMovieClick()"><i class="fas fa-unlock-alt"></i> Unlock Movie (₹1)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Redesigned Settings & Profile Modal with Developer Section -->
+    <div class="modal" id="settings-modal" onclick="handleOutsideClick(event, 'settings-modal')">
+        <div class="modal-content" style="max-width: 440px; padding: 20px;">
+            <button class="modal-close" onclick="closeModalDirect()"><i class="fas fa-times"></i></button>
+            <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 15px;"><i class="fas fa-user-circle"></i> Profile & Info</h3>
+
+            <div class="profile-header-card">
+                <div class="profile-avatar-large" id="p-avatar">U</div>
+                <div style="font-weight:800; font-size:17px;" id="p-name">User Name</div>
+                <div style="font-size:12px; color:var(--text-secondary); margin-top: 2px;" id="p-email">user@email.com</div>
+                <div style="font-size:12px; color:var(--text-secondary); margin-top: 2px;" id="p-mobile">Mobile: Not Added</div>
+            </div>
+
+            <!-- Developer Information Section -->
+            <div class="developer-info-box">
+                <div class="developer-title">
+                    <i class="fas fa-code"></i> About Developer
+                </div>
+                <div class="developer-desc">
+                    <strong>Aayan Industries</strong> is dedicated to delivering high-performance web applications, video streaming platforms, and secure digital payment tools with smooth UI/UX standards.
+                </div>
+            </div>
+
+            <button class="btn btn-outline" style="margin-bottom:10px;" onclick="openPrivacyPolicy()"><i class="fas fa-shield-alt"></i> Privacy Policy</button>
+            <button class="btn" style="background:#fff0f1; color:var(--accent); border:1px solid rgba(229,9,20,0.2); box-shadow:none;" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="showHome()"><i class="fas fa-home"></i><span>Home</span></button>
+        <button class="nav-item" onclick="focusSearch()"><i class="fas fa-search"></i><span>Search</span></button>
+        <button class="nav-item" onclick="openWalletModal()"><i class="fas fa-wallet"></i><span>Wallet</span></button>
+        <button class="nav-item" onclick="openSettings()"><i class="fas fa-user"></i><span>Profile</span></button>
+    </nav>
+
+    <!-- Razorpay Checkout SDK -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBt3iYcR4SijEJqtrBlH8mNr292vakgJFQ",
+            authDomain: "figo-movies.firebaseapp.com",
+            databaseURL: "https://figo-movies-default-rtdb.firebaseio.com",
+            projectId: "figo-movies",
+            storageBucket: "figo-movies.firebasestorage.app",
+            messagingSenderId: "425238806262",
+            appId: "1:425238806262:web:7d23814e4b550695bb76d7"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+
+        let allMovies = [];
+        let filteredMovies = [];
+        let currentUser = null;
+        let userData = {};
+        let activeMovie = null;
+        let currentCarouselIndex = 0;
+        let selectedGenre = 'All';
+        let autoSliderTimer = null;
+
+        // Hide Splash Screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                splash.style.opacity = '0';
+                splash.style.visibility = 'hidden';
+            }, 1800);
+        });
+
+        // Outside Click Listener to Close Modals
+        function handleOutsideClick(event, modalId) {
+            if (event.target.id === modalId) {
+                closeModalDirect();
+            }
+        }
+
+        // Back Button popstate navigation
+        window.addEventListener('popstate', (e) => {
+            const openModals = document.querySelectorAll('.modal[style*="display: block"]');
+            if (openModals.length > 0) {
+                openModals.forEach(m => m.style.display = 'none');
+                stopVideo();
+            }
+        });
+
+        function pushModalState() {
+            history.pushState({ modalOpen: true }, "");
+        }
+
+        function closeModalDirect() {
+            const openModals = document.querySelectorAll('.modal[style*="display: block"]');
+            if (openModals.length > 0) {
+                openModals.forEach(m => m.style.display = 'none');
+                stopVideo();
+                if (history.state && history.state.modalOpen) {
+                    history.back();
+                }
+            }
+        }
+
+        // Firebase Auth State
+        auth.onAuthStateChanged((user) => {
+            currentUser = user;
+            if (user) {
+                document.getElementById('auth-guard').style.display = 'none';
+                syncUserData(user.uid);
+                loadMovies();
+            } else {
+                document.getElementById('auth-guard').style.display = 'flex';
+            }
+        });
+
+        function syncUserData(uid) {
+            database.ref('users/' + uid).on('value', (snapshot) => {
+                userData = snapshot.val() || {};
+                const walletBalance = userData.wallet !== undefined ? userData.wallet : 0;
+                document.getElementById('top-wallet-val').textContent = walletBalance;
+                document.getElementById('modal-wallet-val').textContent = walletBalance;
+                
+                const name = userData.name || 'User';
+                document.getElementById('p-name').textContent = name;
+                document.getElementById('p-email').textContent = currentUser.email || 'No email';
+                document.getElementById('p-mobile').textContent = userData.mobile ? 'Mobile: ' + userData.mobile : 'Mobile: Not added';
+                document.getElementById('p-avatar').textContent = name.charAt(0).toUpperCase();
+
+                if (activeMovie) updateMovieModalState();
+                displayMovies(filteredMovies);
+            });
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            if (tab === 'login') {
+                document.querySelectorAll('.auth-tab')[0].classList.add('active');
+                document.getElementById('login-form').classList.add('active');
+            } else {
+                document.querySelectorAll('.auth-tab')[1].classList.add('active');
+                document.getElementById('signup-form').classList.add('active');
+            }
+        }
+
+        // Login Handler
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+            auth.signInWithEmailAndPassword(email, password).catch(err => alert(err.message));
+        });
+
+        // Signup Handler with Automatic ₹1 Signup Bonus
+        document.getElementById('signup-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('signup-name').value.trim();
+            const email = document.getElementById('signup-email').value.trim();
+            const mobile = document.getElementById('signup-mobile').value.trim();
+            const password = document.getElementById('signup-password').value;
+
+            const authEmail = email ? email : `user_${Date.now()}@figomovies.com`;
+
+            auth.createUserWithEmailAndPassword(authEmail, password)
+                .then(cred => {
+                    return database.ref('users/' + cred.user.uid).set({
+                        name: name,
+                        email: email,
+                        mobile: mobile,
+                        wallet: 1, // FREE ₹1 BONUS
+                        purchasedMovies: {},
+                        createdAt: Date.now()
+                    });
+                })
+                .then(() => alert('Welcome! ₹1 Free Signup Bonus credited to your wallet.'))
+                .catch(err => alert(err.message));
+        });
+
+        function handleLogout() {
+            auth.signOut().then(() => closeModalDirect());
+        }
+
+        function openPrivacyPolicy() {
+            window.location.href = "https://aayanindustries.shop";
+        }
+
+        // Load Movies (Reverse Order: Latest Admin Uploaded Shows First)
+        function loadMovies() {
+            database.ref('movies').on('value', (snapshot) => {
+                allMovies = [];
+                if (snapshot.exists()) {
+                    snapshot.forEach(child => {
+                        let m = child.val();
+                        m.id = child.key;
+                        allMovies.unshift(m); // Latest Upload First
+                    });
+                }
+                filteredMovies = [...allMovies];
+                initCarousel();
+                displayMovies(filteredMovies);
+                loadGenres();
+            });
+        }
+
+        function isMoviePurchased(movieId) {
+            return userData.purchasedMovies && userData.purchasedMovies[movieId] === true;
+        }
+
+        function displayMovies(movies) {
+            const grid = document.getElementById('movies-grid');
+            grid.innerHTML = '';
+            movies.forEach(movie => {
+                const purchased = isMoviePurchased(movie.id);
+                const card = document.createElement('div');
+                card.className = 'movie-card';
+                card.innerHTML = `
+                    <span class="movie-card-tag ${purchased ? 'purchased' : ''}">${purchased ? 'Unlocked' : '₹1'}</span>
+                    <img src="${movie.poster}" alt="${movie.title}">
+                    <div class="movie-card-info">
+                        <div class="movie-card-title">${movie.title}</div>
+                    </div>
+                `;
+                card.onclick = () => openMovieDetail(movie);
+                grid.appendChild(card);
+            });
+        }
+
+        function loadGenres() {
+            const genres = ['All', ...new Set(allMovies.map(m => m.genre).filter(Boolean))];
+            const container = document.getElementById('genre-filters');
+            container.innerHTML = '';
+            genres.forEach(g => {
+                const chip = document.createElement('div');
+                chip.className = 'genre-chip' + (g === selectedGenre ? ' active' : '');
+                chip.textContent = g;
+                chip.onclick = () => {
+                    selectedGenre = g;
+                    document.querySelectorAll('.genre-chip').forEach(c => c.classList.toggle('active', c.textContent === g));
+                    filterMovies();
+                };
+                container.appendChild(chip);
+            });
+        }
+
+        function filterMovies() {
+            const term = document.getElementById('search-input').value.toLowerCase();
+            filteredMovies = allMovies.filter(m => {
+                const matchSearch = m.title.toLowerCase().includes(term);
+                const matchGenre = selectedGenre === 'All' || m.genre === selectedGenre;
+                return matchSearch && matchGenre;
+            });
+            displayMovies(filteredMovies);
+        }
+
+        // Movie Detail & Automatic Wallet Deduction
+        function openMovieDetail(movie) {
+            activeMovie = movie;
+            document.getElementById('m-poster').src = movie.poster;
+            document.getElementById('m-poster').style.display = 'block';
+            document.getElementById('v-container').style.display = 'none';
+            document.getElementById('v-iframe').src = '';
+            document.getElementById('m-title').textContent = movie.title;
+            document.getElementById('m-genre').textContent = movie.genre || 'Movie';
+            document.getElementById('m-desc').textContent = movie.description || 'Watch full movie now in HD format!';
+
+            updateMovieModalState();
+            document.getElementById('movie-modal').style.display = 'block';
+            pushModalState();
+        }
+
+        function updateMovieModalState() {
+            if (!activeMovie) return;
+            const purchased = isMoviePurchased(activeMovie.id);
+            const statusTag = document.getElementById('m-status-tag');
+            const mainBtn = document.getElementById('m-main-btn');
+
+            if (purchased) {
+                statusTag.textContent = 'Unlocked (Lifetime Access)';
+                statusTag.style.background = 'rgba(25,135,84,0.15)';
+                statusTag.style.color = 'var(--success)';
+                mainBtn.className = 'btn btn-success';
+                mainBtn.innerHTML = '<i class="fas fa-play"></i> Watch Full Movie';
+            } else {
+                statusTag.textContent = 'Locked (₹1 Charge)';
+                statusTag.style.background = 'rgba(229,9,20,0.15)';
+                statusTag.style.color = 'var(--accent)';
+                mainBtn.className = 'btn';
+                mainBtn.innerHTML = '<i class="fas fa-lock"></i> Unlock Full Movie (₹1)';
+            }
+        }
+
+        function playTrailer() {
+            if (!activeMovie || !activeMovie.trailerUrl) {
+                alert('Trailer unavailable.');
+                return;
+            }
+            embedVideo(activeMovie.trailerUrl);
+        }
+
+        function handleWatchMovieClick() {
+            if (!activeMovie) return;
+            if (isMoviePurchased(activeMovie.id)) {
+                embedVideo(activeMovie.playUrl || activeMovie.downloadUrl);
+            } else {
+                autoPurchaseProcess();
+            }
+        }
+
+        // Automatic Wallet Deduction Flow
+        function autoPurchaseProcess() {
+            const currentWallet = userData.wallet || 0;
+            if (currentWallet >= 1) {
+                // Deduct ₹1 automatically from wallet without prompt
+                const newBal = currentWallet - 1;
+                database.ref(`users/${currentUser.uid}/wallet`).set(newBal).then(() => {
+                    unlockMovieInFirebase(activeMovie.id);
+                });
+            } else {
+                // If insufficient wallet balance, ask for Razorpay direct ₹1 payment
+                payViaRazorpay(1, `Unlock ${activeMovie.title}`, () => {
+                    unlockMovieInFirebase(activeMovie.id);
+                });
+            }
+        }
+
+        function unlockMovieInFirebase(movieId) {
+            database.ref(`users/${currentUser.uid}/purchasedMovies/${movieId}`).set(true).then(() => {
+                alert('Movie Unlocked Successfully!');
+                updateMovieModalState();
+                handleWatchMovieClick();
+            });
+        }
+
+        function embedVideo(url) {
+            if (!url) {
+                alert('Video stream URL missing.');
+                return;
+            }
+            let embedUrl = url;
+            if (url.includes('youtube.com/watch?v=')) {
+                embedUrl = 'https://www.youtube.com/embed/' + url.split('v=')[1].split('&')[0] + '?autoplay=1';
+            } else if (url.includes('youtu.be/')) {
+                embedUrl = 'https://www.youtube.com/embed/' + url.split('youtu.be/')[1] + '?autoplay=1';
+            }
+
+            document.getElementById('m-poster').style.display = 'none';
+            document.getElementById('v-container').style.display = 'block';
+            document.getElementById('v-iframe').src = embedUrl;
+        }
+
+        function stopVideo() {
+            document.getElementById('v-iframe').src = '';
+            document.getElementById('v-container').style.display = 'none';
+            document.getElementById('m-poster').style.display = 'block';
+        }
+
+        // Wallet Recharge
+        function openWalletModal() {
+            document.getElementById('wallet-modal').style.display = 'block';
+            pushModalState();
+        }
+
+        function setQuickAmount(amt) {
+            document.getElementById('wallet-add-amount').value = amt;
+        }
+
+        function initiateWalletRecharge() {
+            const amountInput = parseInt(document.getElementById('wallet-add-amount').value);
+            if (isNaN(amountInput) || amountInput < 5) {
+                alert('Minimum wallet add amount is ₹5');
+                return;
+            }
+
+            payViaRazorpay(amountInput, 'Recharge Wallet', () => {
+                const currentBal = userData.wallet || 0;
+                database.ref(`users/${currentUser.uid}/wallet`).set(currentBal + amountInput).then(() => {
+                    alert(`₹${amountInput} added to your wallet!`);
+                    closeModalDirect();
+                });
+            });
+        }
+
+        // Razorpay Helper
+        function payViaRazorpay(amountInRupees, description, onSuccessCallback) {
+            const options = {
+                "key": "rzp_live_T5OZeAeTkrB7YG",
+                "amount": amountInRupees * 100,
+                "currency": "INR",
+                "name": "Figo Movies",
+                "description": description,
+                "handler": function (response) {
+                    if (response.razorpay_payment_id) {
+                        onSuccessCallback(response);
+                    }
+                },
+                "prefill": {
+                    "name": userData.name || "",
+                    "email": currentUser ? currentUser.email : "",
+                    "contact": userData.mobile || ""
+                },
+                "theme": {
+                    "color": "#e50914"
+                }
+            };
+            const rzp = new Razorpay(options);
+            rzp.open();
+        }
+
+        // Automatic Rotating 3D Carousel Slider Fix
+        function initCarousel() {
+            const carousel = document.getElementById('carousel');
+            carousel.innerHTML = '';
+            const recent = allMovies.slice(0, 5);
+            recent.forEach(m => {
+                const item = document.createElement('div');
+                item.className = 'carousel-item';
+                item.innerHTML = `<img src="${m.poster}"><div class="carousel-item-title">${m.title}</div>`;
+                item.onclick = () => openMovieDetail(m);
+                carousel.appendChild(item);
+            });
+            updateCarousel();
+            startAutoSlider();
+        }
+
+        function updateCarousel() {
+            const items = document.querySelectorAll('.carousel-item');
+            if (!items.length) return;
+            items.forEach((item, i) => {
+                const angle = (360 / items.length) * ((i - currentCarouselIndex + items.length) % items.length);
+                const x = Math.sin(angle * Math.PI / 180) * 180;
+                const z = Math.cos(angle * Math.PI / 180) * 180 - 180;
+                item.style.transform = `translateX(${x}px) translateZ(${z}px)`;
+                item.style.opacity = z < -100 ? '0.4' : '1';
+            });
+        }
+
+        function startAutoSlider() {
+            if (autoSliderTimer) clearInterval(autoSliderTimer);
+            autoSliderTimer = setInterval(() => {
+                const items = document.querySelectorAll('.carousel-item');
+                if (items.length > 0) {
+                    currentCarouselIndex = (currentCarouselIndex + 1) % items.length;
+                    updateCarousel();
+                }
+            }, 3000);
+        }
+
+        // Bottom Nav actions
+        function openSettings() { document.getElementById('settings-modal').style.display = 'block'; pushModalState(); }
+        function showHome() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        function focusSearch() { document.getElementById('search-input').focus(); }
+    </script>
+</body>
+</html>
