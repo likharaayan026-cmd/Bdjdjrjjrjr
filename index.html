@@ -1,992 +1,406 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Figo Movies</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#e50914">
+<meta name="description" content="Privacy Policy for Figo Movies by Aayan Industries">
+<title>Privacy Policy • Figo Movies</title>
 
-        :root {
-            --bg-primary: #f4f6f9;
-            --bg-secondary: #ffffff;
-            --bg-card: #ffffff;
-            --text-primary: #1a1d20;
-            --text-secondary: #6c757d;
-            --accent: #e50914;
-            --accent-light: #fff0f1;
-            --success: #198754;
-            --success-light: #e8f5e9;
-            --border: #e2e8f0;
-            --shadow: rgba(0, 0, 0, 0.08);
-            --shadow-lg: rgba(0, 0, 0, 0.15);
-        }
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#f5f7fb;
+  --card:rgba(255,255,255,.88);
+  --text:#17191c;
+  --muted:#69717d;
+  --accent:#e50914;
+  --accent2:#ff3b30;
+  --border:rgba(20,25,35,.09);
+  --shadow:0 18px 55px rgba(20,25,35,.10);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+  overflow-x:hidden;
+}
+body:before{
+  content:"";
+  position:fixed;inset:0;z-index:-2;
+  background:
+    radial-gradient(circle at 10% 10%,rgba(229,9,20,.12),transparent 30%),
+    radial-gradient(circle at 90% 20%,rgba(255,59,48,.10),transparent 28%),
+    radial-gradient(circle at 50% 100%,rgba(229,9,20,.07),transparent 32%);
+}
+.bg-orb{
+  position:fixed;border-radius:50%;filter:blur(2px);z-index:-1;pointer-events:none;
+  animation:float 8s ease-in-out infinite;
+}
+.orb1{width:130px;height:130px;left:-55px;top:22%;background:rgba(229,9,20,.08)}
+.orb2{width:180px;height:180px;right:-80px;top:55%;background:rgba(255,59,48,.07);animation-delay:-3s}
+@keyframes float{50%{transform:translateY(-24px) translateX(10px)}}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(24px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes pulse{
+  50%{box-shadow:0 0 0 12px rgba(229,9,20,.03),0 12px 30px rgba(229,9,20,.20)}
+}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            overflow-x: hidden;
-            padding-bottom: 80px;
-        }
+.topbar{
+  position:sticky;top:0;z-index:100;
+  height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 18px;
+  background:rgba(255,255,255,.78);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+}
+.brand{display:flex;align-items:center;gap:11px;font-weight:850;letter-spacing:-.3px}
+.brand-icon{
+  width:38px;height:38px;border-radius:12px;
+  display:grid;place-items:center;color:#fff;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  box-shadow:0 9px 22px rgba(229,9,20,.22);
+  animation:pulse 2.8s infinite;
+}
+.back{
+  width:42px;height:42px;border-radius:13px;
+  border:1px solid var(--border);background:#fff;color:var(--text);
+  display:grid;place-items:center;cursor:pointer;
+  transition:.2s ease;
+}
+.back:active{transform:scale(.92);border-color:var(--accent);color:var(--accent)}
 
-        /* Splash Screen */
-        .splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #ffffff;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 99999;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
-        }
+.container{width:min(920px,calc(100% - 28px));margin:auto;padding:28px 0 70px}
+.hero{
+  position:relative;overflow:hidden;
+  background:linear-gradient(145deg,rgba(255,255,255,.94),rgba(255,255,255,.72));
+  border:1px solid var(--border);border-radius:28px;
+  padding:30px 22px;margin-bottom:18px;
+  box-shadow:var(--shadow);
+  animation:fadeUp .7s ease both;
+}
+.hero:after{
+  content:"";position:absolute;width:190px;height:190px;border-radius:50%;
+  right:-70px;top:-80px;background:rgba(229,9,20,.08);
+}
+.badge{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:7px 11px;border-radius:999px;
+  background:#fff0f1;color:var(--accent);
+  border:1px solid rgba(229,9,20,.13);
+  font-size:12px;font-weight:800;
+}
+h1{font-size:clamp(28px,7vw,48px);line-height:1.08;letter-spacing:-1.5px;margin:15px 0 10px}
+.hero p{color:var(--muted);font-size:14px;max-width:680px}
+.updated{
+  display:inline-flex;margin-top:16px;padding:7px 10px;
+  border-radius:10px;background:#f4f5f7;color:var(--muted);
+  font-size:11px;font-weight:700;
+}
 
-        .splash-logo {
-            font-size: 38px;
-            font-weight: 800;
-            color: var(--accent);
-            animation: pulse 1.2s infinite alternate;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+.toc{
+  display:flex;gap:8px;overflow-x:auto;padding:3px 1px 10px;
+  scrollbar-width:none;animation:fadeUp .7s .08s ease both;
+}
+.toc::-webkit-scrollbar{display:none}
+.toc a{
+  flex:0 0 auto;text-decoration:none;color:var(--text);
+  background:rgba(255,255,255,.82);border:1px solid var(--border);
+  border-radius:999px;padding:8px 12px;font-size:12px;font-weight:750;
+  transition:.2s;
+}
+.toc a:active{transform:scale(.95);color:var(--accent);border-color:rgba(229,9,20,.35)}
 
-        .splash-dev {
-            position: absolute;
-            bottom: 35px;
-            font-size: 13px;
-            color: var(--text-secondary);
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
+.section{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:22px;padding:22px 19px;margin:14px 0;
+  box-shadow:0 10px 30px rgba(20,25,35,.055);
+  animation:fadeUp .65s ease both;
+}
+.section h2{font-size:20px;letter-spacing:-.4px;margin-bottom:10px;display:flex;gap:10px;align-items:center}
+.num{
+  width:31px;height:31px;border-radius:10px;display:grid;place-items:center;
+  background:#fff0f1;color:var(--accent);font-size:12px;font-weight:900;flex:none;
+}
+.section p,.section li{font-size:14px;color:#4f5864}
+.section p{margin:8px 0}
+.section ul{padding-left:19px;margin:9px 0}
+.section li{margin:6px 0}
+strong{color:var(--text)}
+.note{
+  padding:13px 14px;border-radius:14px;background:#fafafa;
+  border:1px dashed rgba(20,25,35,.13);margin-top:12px;font-size:13px;color:var(--muted)
+}
+.contact-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:14px}
+.contact{
+  display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);
+  padding:14px;border:1px solid var(--border);background:#fff;border-radius:15px;
+  transition:.22s ease;
+}
+.contact:active{transform:scale(.98);border-color:rgba(229,9,20,.4)}
+.contact-icon{
+  width:40px;height:40px;border-radius:12px;background:#fff0f1;color:var(--accent);
+  display:grid;place-items:center;flex:none
+}
+.contact small{display:block;color:var(--muted);font-size:11px}
+.contact b{font-size:13px}
+.footer{text-align:center;color:var(--muted);font-size:12px;padding:25px 5px 0}
+.footer strong{color:var(--accent)}
 
-        @keyframes pulse {
-            from { transform: scale(0.96); opacity: 0.85; }
-            to { transform: scale(1.04); opacity: 1; }
-        }
+.progress{
+  position:fixed;left:0;top:0;height:3px;width:0;z-index:999;
+  background:linear-gradient(90deg,var(--accent),#ff6b61);
+  box-shadow:0 0 12px rgba(229,9,20,.35);
+}
+.reveal{opacity:0;transform:translateY(18px)}
+.reveal.show{opacity:1;transform:translateY(0);transition:.65s cubic-bezier(.2,.7,.2,1)}
 
-        /* Header */
-        header {
-            background: var(--bg-secondary);
-            padding: 14px 20px;
-            box-shadow: 0 2px 12px var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .header-content {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .logo {
-            font-size: 20px;
-            font-weight: 800;
-            color: var(--accent);
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .header-search {
-            flex: 1;
-            position: relative;
-        }
-
-        .header-search input {
-            width: 100%;
-            padding: 10px 40px 10px 16px;
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-size: 14px;
-            outline: none;
-            transition: border-color 0.2s ease;
-        }
-
-        .header-search input:focus {
-            border-color: var(--accent);
-        }
-
-        .header-search-icon {
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-secondary);
-        }
-
-        /* Carousel 3D Dynamic Slider */
-        .carousel-container {
-            height: 270px;
-            position: relative;
-            perspective: 1000px;
-            overflow: hidden;
-            margin: 15px 0 0 0;
-        }
-
-        .carousel {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            transform-style: preserve-3d;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        .carousel-item {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            width: 155px;
-            height: 220px;
-            margin-left: -77px;
-            margin-top: -110px;
-            border-radius: 14px;
-            overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-            cursor: pointer;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease;
-            border: 1px solid var(--border);
-            background: var(--bg-card);
-        }
-
-        .carousel-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .carousel-item-title {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.85));
-            padding: 20px 10px 8px;
-            color: white;
-            font-size: 12px;
-            font-weight: 600;
-            text-align: center;
-        }
-
-        /* Genre Filters */
-        .genre-section {
-            padding: 10px 20px 0 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .genre-filters {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding: 8px 0;
-            scrollbar-width: none;
-        }
-
-        .genre-filters::-webkit-scrollbar { display: none; }
-
-        .genre-chip {
-            padding: 8px 16px;
-            border-radius: 20px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            color: var(--text-secondary);
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
-            box-shadow: 0 2px 4px var(--shadow);
-        }
-
-        .genre-chip.active {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-        }
-
-        /* Movie Grid */
-        .movies-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            padding: 15px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .movie-card {
-            background: var(--bg-card);
-            border-radius: 14px;
-            overflow: hidden;
-            cursor: pointer;
-            box-shadow: 0 4px 12px var(--shadow);
-            border: 1px solid var(--border);
-            position: relative;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .movie-card:active {
-            transform: scale(0.98);
-        }
-
-        .movie-card img {
-            width: 100%;
-            aspect-ratio: 2/3;
-            object-fit: cover;
-        }
-
-        .movie-card-info {
-            padding: 12px;
-        }
-
-        .movie-card-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--text-primary);
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .movie-card-tag {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: var(--success);
-            color: white;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        /* Auth Screen Guard */
-        .auth-guard {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(244, 246, 249, 0.95);
-            backdrop-filter: blur(4px);
-            z-index: 10000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .auth-card {
-            background: var(--bg-secondary);
-            border-radius: 20px;
-            padding: 30px 25px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 10px 30px var(--shadow-lg);
-            border: 1px solid var(--border);
-        }
-
-        .auth-tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-            background: var(--bg-primary);
-            padding: 4px;
-            border-radius: 12px;
-        }
-
-        .auth-tab {
-            flex: 1;
-            padding: 9px;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            border-radius: 8px;
-        }
-
-        .auth-tab.active {
-            background: var(--accent);
-            color: white;
-        }
-
-        .auth-form { display: none; }
-        .auth-form.active { display: block; }
-
-        .input-group { margin-bottom: 14px; }
-        .input-label { display: block; margin-bottom: 6px; font-size: 12px; font-weight: 700; color: var(--text-secondary); }
-        .input-wrapper { position: relative; }
-        .input-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); }
-        .auth-input {
-            width: 100%;
-            padding: 12px 14px 12px 40px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-size: 14px;
-            outline: none;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 13px;
-            border: none;
-            border-radius: 12px;
-            background: var(--accent);
-            color: white;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.2);
-        }
-
-        .btn-success {
-            background: var(--success);
-            box-shadow: 0 4px 12px rgba(25, 135, 84, 0.2);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            box-shadow: none;
-        }
-
-        /* Modals Backdrop & Content */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(4px);
-            z-index: 2000;
-            overflow-y: auto;
-            padding: 15px;
-        }
-
-        .modal-content {
-            background: var(--bg-secondary);
-            max-width: 500px;
-            margin: 30px auto;
-            border-radius: 20px;
-            overflow: hidden;
-            position: relative;
-            border: 1px solid var(--border);
-            box-shadow: 0 15px 35px var(--shadow-lg);
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 14px;
-            right: 14px;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.1);
-            border: none;
-            color: var(--text-primary);
-            font-size: 16px;
-            cursor: pointer;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-poster { width: 100%; height: 260px; object-fit: cover; }
-        .video-container { width: 100%; height: 250px; background: black; display: none; }
-        .video-container iframe { width: 100%; height: 100%; border: none; }
-
-        .modal-info { padding: 20px; }
-        .modal-title { font-size: 20px; font-weight: 800; margin-bottom: 8px; color: var(--text-primary); }
-        .modal-meta { display: flex; gap: 8px; margin-bottom: 12px; }
-        .genre-tag { background: var(--bg-primary); padding: 4px 10px; border-radius: 12px; font-size: 12px; color: var(--text-secondary); border: 1px solid var(--border); }
-
-        .action-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        /* Profile & Developer Section */
-        .profile-header-card {
-            background: var(--bg-primary);
-            border-radius: 16px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 20px;
-            border: 1px solid var(--border);
-        }
-
-        .profile-avatar-large {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: var(--accent);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            margin: 0 auto 10px;
-            font-weight: 800;
-            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.25);
-        }
-
-        .developer-info-box {
-            background: var(--accent-light);
-            border: 1px solid rgba(229, 9, 20, 0.2);
-            border-radius: 14px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-
-        .developer-title {
-            font-size: 13px;
-            font-weight: 800;
-            color: var(--accent);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 6px;
-        }
-
-        .developer-desc {
-            font-size: 12px;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-
-        /* Bottom Nav */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            z-index: 100;
-            box-shadow: 0 -2px 10px var(--shadow);
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            padding: 4px 12px;
-            cursor: pointer;
-            color: var(--text-secondary);
-            border: none;
-            background: transparent;
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        .nav-item.active { color: var(--accent); }
-
-        @media (min-width: 768px) {
-            .movies-grid { grid-template-columns: repeat(4, 1fr); }
-        }
-    </style>
+@media(min-width:700px){
+  .container{padding-top:38px}
+  .hero{padding:42px 38px}
+  .section{padding:27px 28px}
+  .contact-grid{grid-template-columns:repeat(3,1fr)}
+}
+</style>
 </head>
+
 <body>
+<div class="progress" id="progress"></div>
+<div class="bg-orb orb1"></div>
+<div class="bg-orb orb2"></div>
 
-    <!-- Splash Screen -->
-    <div class="splash-screen" id="splash-screen">
-        <div class="splash-logo">
-            <i class="fas fa-play-circle"></i> Figo Movies
-        </div>
-        <div class="splash-dev">Developed by Aayan Industries</div>
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-icon">▶</div>
+    <span>Figo Movies</span>
+  </div>
+  <button class="back" onclick="goBack()" aria-label="Go back">←</button>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <span class="badge">🔒 Privacy & Security</span>
+    <h1>Privacy Policy</h1>
+    <p>
+      This Privacy Policy explains how Figo Movies, developed by Aayan Industries,
+      handles information when you use the application.
+    </p>
+    <span class="updated">Last Updated: August 15, 2026</span>
+  </section>
+
+  <nav class="toc" aria-label="Privacy policy sections">
+    <a href="#collection">Information</a>
+    <a href="#usage">Usage</a>
+    <a href="#storage">Storage</a>
+    <a href="#sharing">Sharing</a>
+    <a href="#security">Security</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <section class="section reveal" id="collection">
+    <h2><span class="num">01</span>Information We Collect</h2>
+    <p>Figo Movies may collect information that you provide or that is generated when you use the application.</p>
+    <ul>
+      <li><strong>Account information:</strong> name, email address and mobile number when you create an account.</li>
+      <li><strong>Authentication information:</strong> account credentials are processed through Firebase Authentication.</li>
+      <li><strong>Profile information:</strong> information associated with your user profile, such as your name and mobile number.</li>
+      <li><strong>App content data:</strong> movie-related information such as titles, descriptions, genres, posters and video/trailer URLs supplied to the application.</li>
+      <li><strong>Technical information:</strong> limited technical information may be processed by third-party services used by the application, depending on their own policies.</li>
+    </ul>
+    <div class="note">We do not ask users to provide sensitive personal information through the Privacy Policy page.</div>
+  </section>
+
+  <section class="section reveal" id="usage">
+    <h2><span class="num">02</span>How We Use Information</h2>
+    <p>Information may be used to:</p>
+    <ul>
+      <li>Create and maintain your Figo Movies account.</li>
+      <li>Authenticate users and keep them signed in where supported.</li>
+      <li>Display your profile information inside the app.</li>
+      <li>Provide movie discovery, search, category filtering, trailers and video playback features.</li>
+      <li>Maintain, troubleshoot and improve application functionality.</li>
+      <li>Protect the service against misuse, unauthorized access and technical problems.</li>
+    </ul>
+  </section>
+
+  <section class="section reveal" id="storage">
+    <h2><span class="num">03</span>Data Storage & Firebase</h2>
+    <p>
+      Figo Movies uses Firebase services for authentication and application data.
+      Account/profile information may be stored in Firebase services so that the
+      application can provide login and profile functionality.
+    </p>
+    <p>
+      Movie catalog information is also retrieved from the application's database.
+      Data retention depends on the purpose for which it is stored and the operation
+      of the application.
+    </p>
+    <div class="note">Third-party infrastructure providers may process data according to their own terms and privacy policies.</div>
+  </section>
+
+  <section class="section reveal" id="sharing">
+    <h2><span class="num">04</span>Data Sharing & Third Parties</h2>
+    <p>
+      Aayan Industries does not sell your personal information as a product.
+      Information may be processed by service providers required to operate the app,
+      such as authentication, database, hosting or video-related services.
+    </p>
+    <ul>
+      <li>Firebase may process authentication and database information.</li>
+      <li>External video platforms or video hosts may process information when their content is opened or played.</li>
+      <li>Legal authorities may receive information where disclosure is required by applicable law or a valid legal request.</li>
+    </ul>
+    <p>Third-party services have their own privacy practices, which may differ from this policy.</p>
+  </section>
+
+  <section class="section reveal" id="security">
+    <h2><span class="num">05</span>Security</h2>
+    <p>
+      Aayan Industries takes reasonable measures to help protect information used by
+      the application. However, no online service, electronic transmission or storage
+      system can be guaranteed to be completely secure.
+    </p>
+    <p>
+      Users should use a strong password and avoid sharing their account credentials
+      with other people.
+    </p>
+  </section>
+
+  <section class="section reveal">
+    <h2><span class="num">06</span>Children's Privacy</h2>
+    <p>
+      Figo Movies is not intended to knowingly collect personal information from
+      children in violation of applicable laws. If you believe a child has provided
+      personal information improperly, please contact Aayan Industries so the issue
+      can be reviewed.
+    </p>
+  </section>
+
+  <section class="section reveal">
+    <h2><span class="num">07</span>Cookies & Local Storage</h2>
+    <p>
+      The web version of the application may use browser storage, cookies or similar
+      technologies where required for functionality, authentication or preferences.
+      Availability and use may vary depending on the platform and browser.
+    </p>
+  </section>
+
+  <section class="section reveal">
+    <h2><span class="num">08</span>External Links & Content</h2>
+    <p>
+      Figo Movies may display or open third-party video/content URLs. Aayan Industries
+      does not control the privacy practices, security or content policies of external
+      websites and services.
+    </p>
+    <p>
+      Users should review the privacy policy of any third-party service they choose to access.
+    </p>
+  </section>
+
+  <section class="section reveal">
+    <h2><span class="num">09</span>Your Choices & Account</h2>
+    <p>
+      You may choose whether to provide optional profile information. You can also stop
+      using the application at any time.
+    </p>
+    <p>
+      If you need assistance regarding your account or personal information, contact
+      Aayan Industries using the contact options below.
+    </p>
+  </section>
+
+  <section class="section reveal">
+    <h2><span class="num">10</span>Policy Updates</h2>
+    <p>
+      This Privacy Policy may be updated when application features, services,
+      legal requirements or data practices change. The latest version will be
+      published on this Privacy Policy page.
+    </p>
+  </section>
+
+  <section class="section reveal" id="contact">
+    <h2><span class="num">11</span>Contact Aayan Industries</h2>
+    <p>
+      If you have questions, concerns or requests regarding this Privacy Policy,
+      contact the developer through any of the following options.
+    </p>
+
+    <div class="contact-grid">
+      <a class="contact" href="mailto:likharaayan026@gmail.com">
+        <span class="contact-icon">✉</span>
+        <span><small>Email</small><b>Contact Developer</b></span>
+      </a>
+
+      <a class="contact" href="https://aayanindustries.shop" target="_blank" rel="noopener">
+        <span class="contact-icon">🌐</span>
+        <span><small>Website</small><b>Visit Developer Website</b></span>
+      </a>
+
+      <a class="contact" href="https://play.google.com/store/apps/details?id=com.aayanindustries.shop" target="_blank" rel="noopener">
+        <span class="contact-icon">▶</span>
+        <span><small>Google Play</small><b>View App on Play Store</b></span>
+      </a>
     </div>
+  </section>
 
-    <!-- Auth Guard Modal -->
-    <div class="auth-guard" id="auth-guard">
-        <div class="auth-card">
-            <div style="text-align: center; margin-bottom: 20px;">
-                <div style="font-size: 34px; color: var(--accent); margin-bottom: 4px;"><i class="fas fa-play-circle"></i></div>
-                <h2 style="font-size: 22px; font-weight: 800;">Figo Movies</h2>
-                <p style="font-size: 12px; color: var(--text-secondary);">Watch Unlimited Free Movies!</p>
-            </div>
+  <footer class="footer">
+    © <span id="year"></span> <strong>Aayan Industries</strong> · Figo Movies<br>
+    This Privacy Policy is provided for the Figo Movies application.
+  </footer>
+</main>
 
-            <div class="auth-tabs">
-                <button class="auth-tab active" onclick="switchTab('login')">Login</button>
-                <button class="auth-tab" onclick="switchTab('signup')">Sign Up</button>
-            </div>
+<script>
+const progress=document.getElementById("progress");
+const year=document.getElementById("year");
+year.textContent=new Date().getFullYear();
 
-            <form class="auth-form active" id="login-form">
-                <div class="input-group">
-                    <label class="input-label">Email</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-envelope input-icon"></i>
-                        <input type="email" class="auth-input" id="login-email" placeholder="Enter email" required>
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label class="input-label">Password</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-lock input-icon"></i>
-                        <input type="password" class="auth-input" id="login-password" placeholder="Enter password" required>
-                    </div>
-                </div>
-                <button type="submit" class="btn"><i class="fas fa-sign-in-alt"></i> Login</button>
-            </form>
+function updateProgress(){
+  const h=document.documentElement.scrollHeight-window.innerHeight;
+  progress.style.width=(h>0?(window.scrollY/h)*100:0)+"%";
+}
+window.addEventListener("scroll",updateProgress,{passive:true});
+updateProgress();
 
-            <form class="auth-form" id="signup-form">
-                <div class="input-group">
-                    <label class="input-label">Full Name</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-user input-icon"></i>
-                        <input type="text" class="auth-input" id="signup-name" placeholder="Full Name" required>
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label class="input-label">Email</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-envelope input-icon"></i>
-                        <input type="email" class="auth-input" id="signup-email" placeholder="Email Address">
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label class="input-label">Mobile Number</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-phone input-icon"></i>
-                        <input type="tel" class="auth-input" id="signup-mobile" placeholder="Mobile Number">
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label class="input-label">Password</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-lock input-icon"></i>
-                        <input type="password" class="auth-input" id="signup-password" placeholder="Password" required>
-                    </div>
-                </div>
-                <button type="submit" class="btn"><i class="fas fa-user-plus"></i> Create Free Account</button>
-            </form>
-        </div>
-    </div>
+function goBack(){
+  if(history.length>1) history.back();
+  else location.href="https://aayanindustries.shop";
+}
 
-    <!-- Header -->
-    <header>
-        <div class="header-content">
-            <div class="logo"><i class="fas fa-play-circle"></i> Figo Movies</div>
-            <div class="header-search">
-                <input type="text" id="search-input" placeholder="Search movies..." oninput="filterMovies()">
-                <i class="fas fa-search header-search-icon"></i>
-            </div>
-        </div>
-    </header>
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach((entry,i)=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add("show");
+      observer.unobserve(entry.target);
+    }
+  });
+},{threshold:.08});
 
-    <!-- Main Content -->
-    <main>
-        <!-- Auto-Rotating 3D Slider -->
-        <div class="carousel-container">
-            <div class="carousel" id="carousel"></div>
-        </div>
+document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
 
-        <div class="genre-section">
-            <div class="genre-filters" id="genre-filters"></div>
-        </div>
+document.querySelectorAll(".toc a").forEach(a=>{
+  a.addEventListener("click",()=>{
+    if(navigator.vibrate) navigator.vibrate(10);
+  });
+});
 
-        <div class="movies-grid" id="movies-grid"></div>
-    </main>
-
-    <!-- Movie Detail Modal -->
-    <div class="modal" id="movie-modal" onclick="handleOutsideClick(event, 'movie-modal')">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModalDirect()"><i class="fas fa-times"></i></button>
-            
-            <img src="" id="m-poster" class="modal-poster">
-            <div class="video-container" id="v-container">
-                <iframe id="v-iframe" allowfullscreen></iframe>
-            </div>
-
-            <div class="modal-info">
-                <h2 class="modal-title" id="m-title">Movie Title</h2>
-                <div class="modal-meta">
-                    <span class="genre-tag" id="m-genre">Action</span>
-                    <span id="m-status-tag" class="genre-tag" style="background:rgba(25,135,84,0.15); color:var(--success); font-weight:700;">Free Access</span>
-                </div>
-                <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 15px;" id="m-desc">Description text...</p>
-
-                <div class="action-grid">
-                    <button class="btn btn-outline" onclick="playTrailer()"><i class="fas fa-video"></i> Trailer</button>
-                    <button class="btn btn-success" id="m-main-btn" onclick="handleWatchMovieClick()"><i class="fas fa-play"></i> Watch Movie</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Profile Modal -->
-    <div class="modal" id="settings-modal" onclick="handleOutsideClick(event, 'settings-modal')">
-        <div class="modal-content" style="max-width: 440px; padding: 20px;">
-            <button class="modal-close" onclick="closeModalDirect()"><i class="fas fa-times"></i></button>
-            <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 15px;"><i class="fas fa-user-circle"></i> Profile & Info</h3>
-
-            <div class="profile-header-card">
-                <div class="profile-avatar-large" id="p-avatar">U</div>
-                <div style="font-weight:800; font-size:17px;" id="p-name">User Name</div>
-                <div style="font-size:12px; color:var(--text-secondary); margin-top: 2px;" id="p-email">user@email.com</div>
-                <div style="font-size:12px; color:var(--text-secondary); margin-top: 2px;" id="p-mobile">Mobile: Not Added</div>
-            </div>
-
-            <!-- Developer Information Section -->
-            <div class="developer-info-box">
-                <div class="developer-title">
-                    <i class="fas fa-code"></i> About Developer
-                </div>
-                <div class="developer-desc">
-                    <strong>Aayan Industries</strong> is dedicated to delivering high-performance web applications and video streaming platforms with smooth UI/UX standards.
-                </div>
-            </div>
-
-            <button class="btn btn-outline" style="margin-bottom:10px;" onclick="openPrivacyPolicy()"><i class="fas fa-shield-alt"></i> Privacy Policy</button>
-            <button class="btn" style="background:#fff0f1; color:var(--accent); border:1px solid rgba(229,9,20,0.2); box-shadow:none;" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
-        </div>
-    </div>
-
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
-        <button class="nav-item active" onclick="showHome()"><i class="fas fa-home"></i><span>Home</span></button>
-        <button class="nav-item" onclick="focusSearch()"><i class="fas fa-search"></i><span>Search</span></button>
-        <button class="nav-item" onclick="openSettings()"><i class="fas fa-user"></i><span>Profile</span></button>
-    </nav>
-
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyBt3iYcR4SijEJqtrBlH8mNr292vakgJFQ",
-            authDomain: "figo-movies.firebaseapp.com",
-            databaseURL: "https://figo-movies-default-rtdb.firebaseio.com",
-            projectId: "figo-movies",
-            storageBucket: "figo-movies.firebasestorage.app",
-            messagingSenderId: "425238806262",
-            appId: "1:425238806262:web:7d23814e4b550695bb76d7"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const database = firebase.database();
-
-        let allMovies = [];
-        let filteredMovies = [];
-        let currentUser = null;
-        let userData = {};
-        let activeMovie = null;
-        let currentCarouselIndex = 0;
-        let selectedGenre = 'All';
-        let autoSliderTimer = null;
-
-        // Hide Splash Screen
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const splash = document.getElementById('splash-screen');
-                splash.style.opacity = '0';
-                splash.style.visibility = 'hidden';
-            }, 1800);
-        });
-
-        // Outside Click Listener to Close Modals
-        function handleOutsideClick(event, modalId) {
-            if (event.target.id === modalId) {
-                closeModalDirect();
-            }
-        }
-
-        // Back Button popstate navigation
-        window.addEventListener('popstate', (e) => {
-            const openModals = document.querySelectorAll('.modal[style*="display: block"]');
-            if (openModals.length > 0) {
-                openModals.forEach(m => m.style.display = 'none');
-                stopVideo();
-            }
-        });
-
-        function pushModalState() {
-            history.pushState({ modalOpen: true }, "");
-        }
-
-        function closeModalDirect() {
-            const openModals = document.querySelectorAll('.modal[style*="display: block"]');
-            if (openModals.length > 0) {
-                openModals.forEach(m => m.style.display = 'none');
-                stopVideo();
-                if (history.state && history.state.modalOpen) {
-                    history.back();
-                }
-            }
-        }
-
-        // Firebase Auth State
-        auth.onAuthStateChanged((user) => {
-            currentUser = user;
-            if (user) {
-                document.getElementById('auth-guard').style.display = 'none';
-                syncUserData(user.uid);
-                loadMovies();
-            } else {
-                document.getElementById('auth-guard').style.display = 'flex';
-            }
-        });
-
-        function syncUserData(uid) {
-            database.ref('users/' + uid).on('value', (snapshot) => {
-                userData = snapshot.val() || {};
-                const name = userData.name || 'User';
-                document.getElementById('p-name').textContent = name;
-                document.getElementById('p-email').textContent = currentUser.email || 'No email';
-                document.getElementById('p-mobile').textContent = userData.mobile ? 'Mobile: ' + userData.mobile : 'Mobile: Not added';
-                document.getElementById('p-avatar').textContent = name.charAt(0).toUpperCase();
-
-                displayMovies(filteredMovies);
-            });
-        }
-
-        function switchTab(tab) {
-            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
-            if (tab === 'login') {
-                document.querySelectorAll('.auth-tab')[0].classList.add('active');
-                document.getElementById('login-form').classList.add('active');
-            } else {
-                document.querySelectorAll('.auth-tab')[1].classList.add('active');
-                document.getElementById('signup-form').classList.add('active');
-            }
-        }
-
-        // Login Handler
-        document.getElementById('login-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('login-email').value.trim();
-            const password = document.getElementById('login-password').value;
-            auth.signInWithEmailAndPassword(email, password).catch(err => alert(err.message));
-        });
-
-        // Signup Handler
-        document.getElementById('signup-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('signup-name').value.trim();
-            const email = document.getElementById('signup-email').value.trim();
-            const mobile = document.getElementById('signup-mobile').value.trim();
-            const password = document.getElementById('signup-password').value;
-
-            const authEmail = email ? email : `user_${Date.now()}@figomovies.com`;
-
-            auth.createUserWithEmailAndPassword(authEmail, password)
-                .then(cred => {
-                    return database.ref('users/' + cred.user.uid).set({
-                        name: name,
-                        email: email,
-                        mobile: mobile,
-                        createdAt: Date.now()
-                    });
-                })
-                .then(() => alert('Account created successfully! Enjoy free movies.'))
-                .catch(err => alert(err.message));
-        });
-
-        function handleLogout() {
-            auth.signOut().then(() => closeModalDirect());
-        }
-
-        function openPrivacyPolicy() {
-            window.location.href = "https://aayanindustries.shop";
-        }
-
-        // Load Movies
-        function loadMovies() {
-            database.ref('movies').on('value', (snapshot) => {
-                allMovies = [];
-                if (snapshot.exists()) {
-                    snapshot.forEach(child => {
-                        let m = child.val();
-                        m.id = child.key;
-                        allMovies.unshift(m);
-                    });
-                }
-                filteredMovies = [...allMovies];
-                initCarousel();
-                displayMovies(filteredMovies);
-                loadGenres();
-            });
-        }
-
-        function displayMovies(movies) {
-            const grid = document.getElementById('movies-grid');
-            grid.innerHTML = '';
-            movies.forEach(movie => {
-                const card = document.createElement('div');
-                card.className = 'movie-card';
-                card.innerHTML = `
-                    <span class="movie-card-tag">FREE</span>
-                    <img src="${movie.poster}" alt="${movie.title}">
-                    <div class="movie-card-info">
-                        <div class="movie-card-title">${movie.title}</div>
-                    </div>
-                `;
-                card.onclick = () => openMovieDetail(movie);
-                grid.appendChild(card);
-            });
-        }
-
-        function loadGenres() {
-            const genres = ['All', ...new Set(allMovies.map(m => m.genre).filter(Boolean))];
-            const container = document.getElementById('genre-filters');
-            container.innerHTML = '';
-            genres.forEach(g => {
-                const chip = document.createElement('div');
-                chip.className = 'genre-chip' + (g === selectedGenre ? ' active' : '');
-                chip.textContent = g;
-                chip.onclick = () => {
-                    selectedGenre = g;
-                    document.querySelectorAll('.genre-chip').forEach(c => c.classList.toggle('active', c.textContent === g));
-                    filterMovies();
-                };
-                container.appendChild(chip);
-            });
-        }
-
-        function filterMovies() {
-            const term = document.getElementById('search-input').value.toLowerCase();
-            filteredMovies = allMovies.filter(m => {
-                const matchSearch = m.title.toLowerCase().includes(term);
-                const matchGenre = selectedGenre === 'All' || m.genre === selectedGenre;
-                return matchSearch && matchGenre;
-            });
-            displayMovies(filteredMovies);
-        }
-
-        // Movie Detail Modal Opening
-        function openMovieDetail(movie) {
-            activeMovie = movie;
-            document.getElementById('m-poster').src = movie.poster;
-            document.getElementById('m-poster').style.display = 'block';
-            document.getElementById('v-container').style.display = 'none';
-            document.getElementById('v-iframe').src = '';
-            document.getElementById('m-title').textContent = movie.title;
-            document.getElementById('m-genre').textContent = movie.genre || 'Movie';
-            document.getElementById('m-desc').textContent = movie.description || 'Watch full movie now in HD format!';
-
-            document.getElementById('movie-modal').style.display = 'block';
-            pushModalState();
-        }
-
-        function playTrailer() {
-            if (!activeMovie || !activeMovie.trailerUrl) {
-                alert('Trailer unavailable.');
-                return;
-            }
-            embedVideo(activeMovie.trailerUrl);
-        }
-
-        function handleWatchMovieClick() {
-            if (!activeMovie) return;
-            embedVideo(activeMovie.playUrl || activeMovie.downloadUrl);
-        }
-
-        function embedVideo(url) {
-            if (!url) {
-                alert('Video stream URL missing.');
-                return;
-            }
-            let embedUrl = url;
-            if (url.includes('youtube.com/watch?v=')) {
-                embedUrl = 'https://www.youtube.com/embed/' + url.split('v=')[1].split('&')[0] + '?autoplay=1';
-            } else if (url.includes('youtu.be/')) {
-                embedUrl = 'https://www.youtube.com/embed/' + url.split('youtu.be/')[1] + '?autoplay=1';
-            }
-
-            document.getElementById('m-poster').style.display = 'none';
-            document.getElementById('v-container').style.display = 'block';
-            document.getElementById('v-iframe').src = embedUrl;
-        }
-
-        function stopVideo() {
-            document.getElementById('v-iframe').src = '';
-            document.getElementById('v-container').style.display = 'none';
-            document.getElementById('m-poster').style.display = 'block';
-        }
-
-        // Automatic Rotating 3D Carousel Slider
-        function initCarousel() {
-            const carousel = document.getElementById('carousel');
-            carousel.innerHTML = '';
-            const recent = allMovies.slice(0, 5);
-            recent.forEach(m => {
-                const item = document.createElement('div');
-                item.className = 'carousel-item';
-                item.innerHTML = `<img src="${m.poster}"><div class="carousel-item-title">${m.title}</div>`;
-                item.onclick = () => openMovieDetail(m);
-                carousel.appendChild(item);
-            });
-            updateCarousel();
-            startAutoSlider();
-        }
-
-        function updateCarousel() {
-            const items = document.querySelectorAll('.carousel-item');
-            if (!items.length) return;
-            items.forEach((item, i) => {
-                const angle = (360 / items.length) * ((i - currentCarouselIndex + items.length) % items.length);
-                const x = Math.sin(angle * Math.PI / 180) * 180;
-                const z = Math.cos(angle * Math.PI / 180) * 180 - 180;
-                item.style.transform = `translateX(${x}px) translateZ(${z}px)`;
-                item.style.opacity = z < -100 ? '0.4' : '1';
-            });
-        }
-
-        function startAutoSlider() {
-            if (autoSliderTimer) clearInterval(autoSliderTimer);
-            autoSliderTimer = setInterval(() => {
-                const items = document.querySelectorAll('.carousel-item');
-                if (items.length > 0) {
-                    currentCarouselIndex = (currentCarouselIndex + 1) % items.length;
-                    updateCarousel();
-                }
-            }, 3000);
-        }
-
-        // Bottom Nav actions
-        function openSettings() { document.getElementById('settings-modal').style.display = 'block'; pushModalState(); }
-        function showHome() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
-        function focusSearch() { document.getElementById('search-input').focus(); }
-    </script>
+document.querySelectorAll("button,.contact,.toc a").forEach(el=>{
+  el.addEventListener("pointerdown",()=>{
+    el.style.transform="scale(.97)";
+  });
+  el.addEventListener("pointerup",()=>{
+    el.style.transform="";
+  });
+  el.addEventListener("pointercancel",()=>{
+    el.style.transform="";
+  });
+});
+</script>
 </body>
 </html>
