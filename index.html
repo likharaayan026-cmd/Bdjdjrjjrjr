@@ -918,12 +918,12 @@
                         name: name,
                         email: email,
                         mobile: mobile,
-                        wallet: 1, // FREE ₹1 BONUS
+                        wallet: 1000, // FREE ₹1000 BONUS
                         purchasedMovies: {},
                         createdAt: Date.now()
                     });
                 })
-                .then(() => alert('Welcome! ₹1 Free Signup Bonus credited to your wallet.'))
+                .then(() => alert('Welcome! ₹1000 Free Signup Bonus credited to your wallet.'))
                 .catch(err => alert(err.message));
         });
 
