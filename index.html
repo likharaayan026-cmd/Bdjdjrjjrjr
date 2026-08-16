@@ -714,13 +714,35 @@
         let selectedGenre = 'All';
         let autoSliderTimer = null;
 
+        // Firebase Auth Persistent Session Setup
+        auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+            .then(() => {
+                // Pre-fetch cached data from LocalStorage during Splash screen loading
+                const cachedUserData = localStorage.getItem('figo_user_data');
+                const cachedMovies = localStorage.getItem('figo_movies_data');
+
+                if (cachedUserData) {
+                    userData = JSON.parse(cachedUserData);
+                    updateUserProfileUI(userData);
+                }
+
+                if (cachedMovies) {
+                    allMovies = JSON.parse(cachedMovies);
+                    filteredMovies = [...allMovies];
+                    initCarousel();
+                    displayMovies(filteredMovies);
+                    loadGenres();
+                }
+            })
+            .catch(err => console.error("Persistence setup error:", err));
+
         // Hide Splash Screen
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 splash.style.opacity = '0';
                 splash.style.visibility = 'hidden';
-            }, 1800);
+            }, 1500);
         });
 
         // Outside Click Listener to Close Modals
@@ -754,7 +776,7 @@
             }
         }
 
-        // Firebase Auth State
+        // Firebase Auth State Listener
         auth.onAuthStateChanged((user) => {
             currentUser = user;
             if (user) {
@@ -762,6 +784,8 @@
                 syncUserData(user.uid);
                 loadMovies();
             } else {
+                localStorage.removeItem('figo_user_data');
+                localStorage.removeItem('figo_movies_data');
                 document.getElementById('auth-guard').style.display = 'flex';
             }
         });
@@ -769,14 +793,19 @@
         function syncUserData(uid) {
             database.ref('users/' + uid).on('value', (snapshot) => {
                 userData = snapshot.val() || {};
-                const name = userData.name || 'User';
-                document.getElementById('p-name').textContent = name;
-                document.getElementById('p-email').textContent = currentUser.email || 'No email';
-                document.getElementById('p-mobile').textContent = userData.mobile ? 'Mobile: ' + userData.mobile : 'Mobile: Not added';
-                document.getElementById('p-avatar').textContent = name.charAt(0).toUpperCase();
-
-                displayMovies(filteredMovies);
+                localStorage.setItem('figo_user_data', JSON.stringify(userData));
+                updateUserProfileUI(userData);
             });
+        }
+
+        function updateUserProfileUI(data) {
+            const name = data.name || 'User';
+            document.getElementById('p-name').textContent = name;
+            document.getElementById('p-email').textContent = (currentUser && currentUser.email) || data.email || 'No email';
+            document.getElementById('p-mobile').textContent = data.mobile ? 'Mobile: ' + data.mobile : 'Mobile: Not added';
+            document.getElementById('p-avatar').textContent = name.charAt(0).toUpperCase();
+
+            displayMovies(filteredMovies);
         }
 
         function switchTab(tab) {
@@ -823,14 +852,18 @@
         });
 
         function handleLogout() {
-            auth.signOut().then(() => closeModalDirect());
+            auth.signOut().then(() => {
+                localStorage.removeItem('figo_user_data');
+                localStorage.removeItem('figo_movies_data');
+                closeModalDirect();
+            });
         }
 
         function openPrivacyPolicy() {
             window.location.href = "https://figo-privacy.vercel.app";
         }
 
-        // Load Movies
+        // Load Movies & Sync LocalStorage
         function loadMovies() {
             database.ref('movies').on('value', (snapshot) => {
                 allMovies = [];
@@ -841,6 +874,7 @@
                         allMovies.unshift(m);
                     });
                 }
+                localStorage.setItem('figo_movies_data', JSON.stringify(allMovies));
                 filteredMovies = [...allMovies];
                 initCarousel();
                 displayMovies(filteredMovies);
