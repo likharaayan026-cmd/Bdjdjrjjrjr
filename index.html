@@ -3,694 +3,401 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Figo Movies</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        :root {
-            --bg-primary: #f4f6f9;
-            --bg-secondary: #ffffff;
-            --bg-card: #ffffff;
-            --text-primary: #1a1d20;
-            --text-secondary: #6c757d;
-            --accent: #e50914;
-            --accent-light: #fff0f1;
-            --success: #198754;
-            --success-light: #e8f5e9;
-            --border: #e2e8f0;
-            --shadow: rgba(0, 0, 0, 0.08);
-            --shadow-lg: rgba(0, 0, 0, 0.15);
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            overflow-x: hidden;
-            padding-bottom: 80px;
-        }
-
-        /* Splash Screen */
-        .splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #ffffff;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 99999;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
-        }
-
-        .splash-logo {
-            font-size: 38px;
-            font-weight: 800;
-            color: var(--accent);
-            animation: pulse 1.2s infinite alternate;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .splash-dev {
-            position: absolute;
-            bottom: 35px;
-            font-size: 13px;
-            color: var(--text-secondary);
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        @keyframes pulse {
-            from { transform: scale(0.96); opacity: 0.85; }
-            to { transform: scale(1.04); opacity: 1; }
-        }
-
-        /* Header */
-        header {
-            background: var(--bg-secondary);
-            padding: 14px 20px;
-            box-shadow: 0 2px 12px var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .header-content {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .logo {
-            font-size: 20px;
-            font-weight: 800;
-            color: var(--accent);
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .header-search {
-            flex: 1;
-            position: relative;
-        }
-
-        .header-search input {
-            width: 100%;
-            padding: 10px 40px 10px 16px;
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-size: 14px;
-            outline: none;
-            transition: border-color 0.2s ease;
-        }
-
-        .header-search input:focus {
-            border-color: var(--accent);
-        }
-
-        .header-search-icon {
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-secondary);
-        }
-
-        /* Carousel 3D Dynamic Slider */
-        .carousel-container {
-            height: 270px;
-            position: relative;
-            perspective: 1000px;
-            overflow: hidden;
-            margin: 15px 0 0 0;
-        }
-
-        .carousel {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            transform-style: preserve-3d;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        .carousel-item {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            width: 155px;
-            height: 220px;
-            margin-left: -77px;
-            margin-top: -110px;
-            border-radius: 14px;
-            overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-            cursor: pointer;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease;
-            border: 1px solid var(--border);
-            background: var(--bg-card);
-        }
-
-        .carousel-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .carousel-item-title {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.85));
-            padding: 20px 10px 8px;
-            color: white;
-            font-size: 12px;
-            font-weight: 600;
-            text-align: center;
-        }
-
-        /* Genre Filters */
-        .genre-section {
-            padding: 10px 20px 0 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .genre-filters {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding: 8px 0;
-            scrollbar-width: none;
-        }
-
-        .genre-filters::-webkit-scrollbar { display: none; }
-
-        .genre-chip {
-            padding: 8px 16px;
-            border-radius: 20px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            color: var(--text-secondary);
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
-            box-shadow: 0 2px 4px var(--shadow);
-        }
-
-        .genre-chip.active {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-        }
-
-        /* Movie Grid */
-        .movies-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            padding: 15px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .movie-card {
-            background: var(--bg-card);
-            border-radius: 14px;
-            overflow: hidden;
-            cursor: pointer;
-            box-shadow: 0 4px 12px var(--shadow);
-            border: 1px solid var(--border);
-            position: relative;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .movie-card:active {
-            transform: scale(0.98);
-        }
-
-        .movie-card img {
-            width: 100%;
-            aspect-ratio: 2/3;
-            object-fit: cover;
-        }
-
-        .movie-card-info {
-            padding: 12px;
-        }
-
-        .movie-card-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--text-primary);
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .movie-card-tag {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: var(--success);
-            color: white;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        /* Auth Screen Guard */
-        .auth-guard {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(244, 246, 249, 0.95);
-            backdrop-filter: blur(4px);
-            z-index: 10000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .auth-card {
-            background: var(--bg-secondary);
-            border-radius: 20px;
-            padding: 30px 25px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 10px 30px var(--shadow-lg);
-            border: 1px solid var(--border);
-        }
-
-        .auth-tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-            background: var(--bg-primary);
-            padding: 4px;
-            border-radius: 12px;
-        }
-
-        .auth-tab {
-            flex: 1;
-            padding: 9px;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            border-radius: 8px;
-        }
-
-        .auth-tab.active {
-            background: var(--accent);
-            color: white;
-        }
-
-        .auth-form { display: none; }
-        .auth-form.active { display: block; }
-
-        .input-group { margin-bottom: 14px; }
-        .input-label { display: block; margin-bottom: 6px; font-size: 12px; font-weight: 700; color: var(--text-secondary); }
-        .input-wrapper { position: relative; }
-        .input-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); }
-        .auth-input {
-            width: 100%;
-            padding: 12px 14px 12px 40px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-size: 14px;
-            outline: none;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 13px;
-            border: none;
-            border-radius: 12px;
-            background: var(--accent);
-            color: white;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.2);
-        }
-
-        .btn-success {
-            background: var(--success);
-            box-shadow: 0 4px 12px rgba(25, 135, 84, 0.2);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            box-shadow: none;
-        }
-
-        /* Modals Backdrop & Content */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(4px);
-            z-index: 2000;
-            overflow-y: auto;
-            padding: 15px;
-        }
-
-        .modal-content {
-            background: var(--bg-secondary);
-            max-width: 500px;
-            margin: 30px auto;
-            border-radius: 20px;
-            overflow: hidden;
-            position: relative;
-            border: 1px solid var(--border);
-            box-shadow: 0 15px 35px var(--shadow-lg);
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 14px;
-            right: 14px;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.1);
-            border: none;
-            color: var(--text-primary);
-            font-size: 16px;
-            cursor: pointer;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-poster { width: 100%; height: 260px; object-fit: cover; }
-        .video-container { width: 100%; height: 250px; background: black; display: none; }
-        .video-container iframe { width: 100%; height: 100%; border: none; }
-
-        .modal-info { padding: 20px; }
-        .modal-title { font-size: 20px; font-weight: 800; margin-bottom: 8px; color: var(--text-primary); }
-        .modal-meta { display: flex; gap: 8px; margin-bottom: 12px; }
-        .genre-tag { background: var(--bg-primary); padding: 4px 10px; border-radius: 12px; font-size: 12px; color: var(--text-secondary); border: 1px solid var(--border); }
-
-        .action-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        /* Profile & Developer Section */
-        .profile-header-card {
-            background: var(--bg-primary);
-            border-radius: 16px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 20px;
-            border: 1px solid var(--border);
-        }
-
-        .profile-avatar-large {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: var(--accent);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            margin: 0 auto 10px;
-            font-weight: 800;
-            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.25);
-        }
-
-        .developer-info-box {
-            background: var(--accent-light);
-            border: 1px solid rgba(229, 9, 20, 0.2);
-            border-radius: 14px;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-
-        .developer-title {
-            font-size: 13px;
-            font-weight: 800;
-            color: var(--accent);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 6px;
-        }
-
-        .developer-desc {
-            font-size: 12px;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-
-        /* Bottom Nav */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            z-index: 100;
-            box-shadow: 0 -2px 10px var(--shadow);
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            padding: 4px 12px;
-            cursor: pointer;
-            color: var(--text-secondary);
-            border: none;
-            background: transparent;
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        .nav-item.active { color: var(--accent); }
-
-        @media (min-width: 768px) {
-            .movies-grid { grid-template-columns: repeat(4, 1fr); }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Splash Screen -->
-    <div class="splash-screen" id="splash-screen">
-        <div class="splash-logo">
-            <i class="fas fa-play-circle"></i> Figo Movies
-        </div>
-        <div class="splash-dev">Developed by Aayan Industries</div>
-    </div>
-
-    <!-- Auth Guard Modal -->
-    <div class="auth-guard" id="auth-guard">
-        <div class="auth-card">
-            <div style="text-align: center; margin-bottom: 20px;">
-                <div style="font-size: 34px; color: var(--accent); margin-bottom: 4px;"><i class="fas fa-play-circle"></i></div>
-                <h2 style="font-size: 22px; font-weight: 800;">Figo Movies</h2>
-                <p style="font-size: 12px; color: var(--text-secondary);">Watch Unlimited Free Movies!</p>
-            </div>
-
-            <div class="auth-tabs">
-                <button class="auth-tab active" onclick="switchTab('login')">Login</button>
-                <button class="auth-tab" onclick="switchTab('signup')">Sign Up</button>
-            </div>
-
-            <form class="auth-form active" id="login-form">
-                <div class="input-group">
-                    <label class="input-label">Email</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-envelope input-icon"></i>
-                        <input type="email" class="auth-input" id="login-email" placeholder="Enter email" required>
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label class="input-label">Password</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-lock input-icon"></i>
-                        <input type="password" class="auth-input" id="login-password" placeholder="Enter password" required>
-                    </div>
-                </div>
-                <button type="submit" class="btn"><i class="fas fa-sign-in-alt"></i> Login</button>
-            </form>
-
-            <form class="auth-form" id="signup-form">
-                <div class="input-group">
-                    <label class="input-label">Full Name</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-user input-icon"></i>
-                        <input type="text" class="auth-input" id="signup-name" placeholder="Full Name" required>
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label class="input-label">Email</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-envelope input-icon"></i>
-                        <input type="email" class="auth-input" id="signup-email" placeholder="Email Address">
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label class="input-label">Mobile Number</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-phone input-icon"></i>
-                        <input type="tel" class="auth-input" id="signup-mobile" placeholder="Mobile Number">
-                    </div>
-                </div>
-                <div class="input-group">
-                    <label class="input-label">Password</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-lock input-icon"></i>
-                        <input type="password" class="auth-input" id="signup-password" placeholder="Password" required>
-                    </div>
-                </div>
-                <button type="submit" class="btn"><i class="fas fa-user-plus"></i> Create Free Account</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Header -->
-    <header>
-        <div class="header-content">
-            <div class="logo"><i class="fas fa-play-circle"></i> Figo Movies</div>
-            <div class="header-search">
-                <input type="text" id="search-input" placeholder="Search movies..." oninput="filterMovies()">
-                <i class="fas fa-search header-search-icon"></i>
-            </div>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main>
-        <!-- Auto-Rotating 3D Slider -->
-        <div class="carousel-container">
-            <div class="carousel" id="carousel"></div>
-        </div>
-
-        <div class="genre-section">
-            <div class="genre-filters" id="genre-filters"></div>
-        </div>
-
-        <div class="movies-grid" id="movies-grid"></div>
-    </main>
-
-    <!-- Movie Detail Modal -->
-    <div class="modal" id="movie-modal" onclick="handleOutsideClick(event, 'movie-modal')">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModalDirect()"><i class="fas fa-times"></i></button>
-            
-            <img src="" id="m-poster" class="modal-poster">
-            <div class="video-container" id="v-container">
-                <iframe id="v-iframe" allowfullscreen></iframe>
-            </div>
-
-            <div class="modal-info">
-                <h2 class="modal-title" id="m-title">Movie Title</h2>
-                <div class="modal-meta">
-                    <span class="genre-tag" id="m-genre">Action</span>
-                    <span id="m-status-tag" class="genre-tag" style="background:rgba(25,135,84,0.15); color:var(--success); font-weight:700;">Free Access</span>
-                </div>
-                <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 15px;" id="m-desc">Description text...</p>
-
-                <div class="action-grid">
-                    <button class="btn btn-outline" onclick="playTrailer()"><i class="fas fa-video"></i> Trailer</button>
-                    <button class="btn btn-success" id="m-main-btn" onclick="handleWatchMovieClick()"><i class="fas fa-play"></i> Watch Movie</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Profile Modal -->
-    <div class="modal" id="settings-modal" onclick="handleOutsideClick(event, 'settings-modal')">
-        <div class="modal-content" style="max-width: 440px; padding: 20px;">
-            <button class="modal-close" onclick="closeModalDirect()"><i class="fas fa-times"></i></button>
-            <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 15px;"><i class="fas fa-user-circle"></i> Profile & Info</h3>
-
-            <div class="profile-header-card">
-                <div class="profile-avatar-large" id="p-avatar">U</div>
-                <div style="font-weight:800; font-size:17px;" id="p-name">User Name</div>
-                <div style="font-size:12px; color:var(--text-secondary); margin-top: 2px;" id="p-email">user@email.com</div>
-                <div style="font-size:12px; color:var(--text-secondary); margin-top: 2px;" id="p-mobile">Mobile: Not Added</div>
-            </div>
-
-            <!-- Developer Information Section -->
-            <div class="developer-info-box">
-                <div class="developer-title">
-                    <i class="fas fa-code"></i> About Developer
-                </div>
-                <div class="developer-desc">
-                    <strong>Aayan Industries</strong> is dedicated to delivering high-performance web applications and video streaming platforms with smooth UI/UX standards.
-                </div>
-            </div>
-
-            <button class="btn btn-outline" style="margin-bottom:10px;" onclick="openPrivacyPolicy()"><i class="fas fa-shield-alt"></i> Privacy Policy</button>
-            <button class="btn" style="background:#fff0f1; color:var(--accent); border:1px solid rgba(229,9,20,0.2); box-shadow:none;" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
-        </div>
-    </div>
-
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
-        <button class="nav-item active" onclick="showHome()"><i class="fas fa-home"></i><span>Home</span></button>
-        <button class="nav-item" onclick="focusSearch()"><i class="fas fa-search"></i><span>Search</span></button>
-        <button class="nav-item" onclick="openSettings()"><i class="fas fa-user"></i><span>Profile</span></button>
-    </nav>
-
-    <!-- Firebase SDKs -->
+    <title> Tic Tac Toe </title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .glass-card {
+            background: rgba(18, 18, 28, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .animated-bg {
+            background: linear-gradient(-45deg, #0f172a, #1e1b4b, #311042, #020617);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .cell {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .cell:active {
+            transform: scale(0.92);
+        }
+
+        .btn-glow {
+            box-shadow: 0 0 15px rgba(124, 58, 237, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .btn-glow:hover {
+            box-shadow: 0 0 25px rgba(124, 58, 237, 0.8);
+            transform: translateY(-2px);
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="animated-bg text-white min-h-screen flex items-center justify-center p-0 sm:p-4 overflow-x-hidden">
+
+    <div id="app" class="w-full max-w-md h-screen sm:h-[92vh] max-h-[850px] glass-card sm:rounded-3xl relative overflow-hidden flex flex-col shadow-2xl border-0 sm:border border-white/20">
+
+        <section id="splash-screen" class="absolute inset-0 z-50 bg-slate-950 flex flex-col items-center justify-center space-y-4">
+            <div class="w-20 h-20 bg-gradient-to-tr from-indigo-500 to-pink-500 rounded-3xl flex items-center justify-center animate-bounce shadow-2xl">
+                <i class="fa-solid fa-gamepad text-4xl text-white"></i>
+            </div>
+            <h1 class="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-indigo-400 to-pink-400">TIC TAC TOE</h1>
+            <p class="text-[10px] text-gray-400 tracking-wider font-semibold">BY AAYAN INDUSTRIES</p>
+            <div class="flex items-center space-x-2 text-xs text-indigo-400 pt-2">
+                <i class="fa-solid fa-spinner animate-spin"></i>
+                <span>Loading Profile...</span>
+            </div>
+        </section>
+
+        <header id="app-header" class="px-5 py-4 flex justify-between items-center glass border-b border-white/10 z-20 hidden">
+            <div class="flex items-center space-x-3">
+                <div class="relative">
+                    <img id="user-avatar" src="https://api.dicebear.com/6.x/bottts/svg?seed=Player" class="w-10 h-10 rounded-full border-2 border-indigo-500 bg-slate-800">
+                    <span id="auth-status-dot" class="w-3 h-3 bg-emerald-500 rounded-full absolute bottom-0 right-0 border-2 border-slate-900"></span>
+                </div>
+                <div>
+                    <h2 id="user-display-name" class="text-sm font-bold truncate max-w-[110px]">User</h2>
+                    <p id="user-subtitle" class="text-[10px] text-gray-400">Level Master</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button onclick="switchScreen('wallet-screen')" class="glass px-3 py-1.5 rounded-full flex items-center space-x-1.5 border border-yellow-500/30 hover:border-yellow-500 transition">
+                    <i class="fa-solid fa-indian-rupee-sign text-yellow-400 text-xs"></i>
+                    <span id="wallet-balance" class="text-xs font-bold text-yellow-400">0</span>
+                </button>
+                <button onclick="toggleAudio()" class="w-9 h-9 rounded-full glass flex items-center justify-center hover:bg-white/10 transition">
+                    <i id="sound-icon" class="fa-solid fa-volume-high text-sm text-gray-300"></i>
+                </button>
+            </div>
+        </header>
+
+        <main class="flex-1 relative overflow-y-auto p-4 flex flex-col justify-center">
+
+            <section id="auth-screen" class="space-y-5 my-auto hidden">
+                <div class="text-center space-y-2 mb-2">
+                    <div class="w-16 h-16 mx-auto bg-gradient-to-tr from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                        <i class="fa-solid fa-gamepad text-3xl text-white"></i>
+                    </div>
+                    <h1 class="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">WELCOME</h1>
+                    <p class="text-xs text-gray-400">Login or Create Account to Earn Rewards</p>
+                </div>
+
+                <div class="glass p-5 rounded-2xl space-y-3">
+                    <div id="auth-error" class="hidden text-xs text-red-400 text-center bg-red-500/10 p-2 rounded-lg border border-red-500/20"></div>
+                    
+                    <div>
+                        <label class="text-[10px] text-gray-400 ml-1 mb-1 block">Email Address</label>
+                        <input type="email" id="auth-email" placeholder="enter your email" class="w-full px-4 py-2.5 rounded-xl bg-slate-900/60 border border-white/10 text-xs focus:outline-none focus:border-indigo-500 transition">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-gray-400 ml-1 mb-1 block">Password</label>
+                        <input type="password" id="auth-password" placeholder="enter password" class="w-full px-4 py-2.5 rounded-xl bg-slate-900/60 border border-white/10 text-xs focus:outline-none focus:border-indigo-500 transition">
+                    </div>
+                    
+                    <div class="flex space-x-2 pt-2">
+                        <button onclick="handleEmailAuth(false)" class="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-xs font-bold rounded-xl transition shadow-lg">Login</button>
+                        <button onclick="handleEmailAuth(true)" class="flex-1 py-2.5 bg-purple-600 hover:bg-purple-700 text-xs font-bold rounded-xl transition shadow-lg">Sign Up</button>
+                    </div>
+
+                    <div class="relative flex py-2 items-center">
+                        <div class="flex-grow border-t border-white/10"></div>
+                        <span class="flex-shrink mx-2 text-[10px] text-gray-500 uppercase">OR</span>
+                        <div class="flex-grow border-t border-white/10"></div>
+                    </div>
+
+                    <button onclick="handleGoogleAuth()" class="w-full py-2.5 glass hover:bg-white/10 text-xs font-bold rounded-xl flex items-center justify-center space-x-2 transition border border-white/20">
+                        <i class="fa-brands fa-google text-red-400"></i>
+                        <span>Continue with Google</span>
+                    </button>
+                </div>
+
+                <div class="text-center">
+                    <p class="text-[11px] text-gray-500 font-medium">Developer: <span class="text-indigo-400 font-semibold">Aayan Industries</span></p>
+                </div>
+            </section>
+
+            <section id="home-screen" class="space-y-4 my-auto hidden">
+                <div class="text-center space-y-1 mb-4">
+                    <h1 class="text-4xl font-extrabold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-indigo-500">ULTIMATE</h1>
+                    <p class="text-xs tracking-widest text-indigo-300 font-semibold uppercase">Tic Tac Toe Arena</p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-3">
+                    <button onclick="switchScreen('mode-screen')" class="btn-glow p-4 rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 flex items-center justify-between group">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
+                                <i class="fa-solid fa-gamepad text-lg text-white"></i>
+                            </div>
+                            <div class="text-left">
+                                <h3 class="font-bold text-sm">Play Game</h3>
+                                <p class="text-[10px] text-indigo-200">Easy, Hard & Pro Rewards Mode</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-xs group-hover:translate-x-1 transition"></i>
+                    </button>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="switchScreen('wallet-screen')" class="glass p-3.5 rounded-2xl flex items-center space-x-3 hover:bg-white/10 transition">
+                            <i class="fa-solid fa-wallet text-yellow-400 text-lg"></i>
+                            <div class="text-left">
+                                <h4 class="font-bold text-xs">Wallet</h4>
+                                <p class="text-[10px] text-gray-400">Withdraw ₹</p>
+                            </div>
+                        </button>
+
+                        <button onclick="switchScreen('leaderboard-screen')" class="glass p-3.5 rounded-2xl flex items-center space-x-3 hover:bg-white/10 transition">
+                            <i class="fa-solid fa-trophy text-amber-400 text-lg"></i>
+                            <div class="text-left">
+                                <h4 class="font-bold text-xs">Rankings</h4>
+                                <p class="text-[10px] text-gray-400">Top Players</p>
+                            </div>
+                        </button>
+                    </div>
+
+                    <button onclick="claimDailyReward()" class="w-full glass p-3.5 rounded-2xl flex items-center justify-between hover:bg-white/10 transition border border-emerald-500/30">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-calendar-check text-emerald-400 text-xl"></i>
+                            <div class="text-left">
+                                <h4 class="font-bold text-xs">Daily Bonus</h4>
+                                <p class="text-[10px] text-emerald-400/80">Claim Free Rewards Everyday</p>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full font-bold">Claim ₹</span>
+                    </button>
+                </div>
+            </section>
+
+            <section id="mode-screen" class="space-y-4 my-auto hidden">
+                <div class="flex items-center justify-between mb-2">
+                    <button onclick="goBack()" class="w-8 h-8 rounded-full glass flex items-center justify-center"><i class="fa-solid fa-arrow-left text-xs"></i></button>
+                    <h2 class="font-bold text-base">Select Game Mode</h2>
+                    <div class="w-8"></div>
+                </div>
+
+                <div class="space-y-3">
+                    <button onclick="selectDifficulty('easy')" class="w-full glass p-4 rounded-2xl text-left border-l-4 border-emerald-400 hover:bg-white/10 transition flex justify-between items-center">
+                        <div>
+                            <h3 class="font-bold text-sm text-emerald-400">Easy Mode</h3>
+                            <p class="text-[10px] text-gray-400">Casual Play • Beginner AI</p>
+                        </div>
+                        <span class="text-xs bg-emerald-500/20 text-emerald-300 px-2.5 py-1 rounded-full font-semibold">30 Levels</span>
+                    </button>
+
+                    <button onclick="selectDifficulty('hard')" class="w-full glass p-4 rounded-2xl text-left border-l-4 border-amber-400 hover:bg-white/10 transition flex justify-between items-center">
+                        <div>
+                            <h3 class="font-bold text-sm text-amber-400">Hard Mode</h3>
+                            <p class="text-[10px] text-gray-400">Smart AI • Strategic Play</p>
+                        </div>
+                        <span class="text-xs bg-amber-500/20 text-amber-300 px-2.5 py-1 rounded-full font-semibold">30 Levels</span>
+                    </button>
+
+                    <button onclick="selectDifficulty('pro')" class="w-full glass p-4 rounded-2xl text-left border-l-4 border-purple-500 hover:bg-white/10 transition flex justify-between items-center bg-gradient-to-r from-purple-900/20 to-transparent">
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <h3 class="font-bold text-sm text-purple-400">Pro (Impossible)</h3>
+                                <span class="bg-yellow-500/20 text-yellow-300 text-[9px] px-1.5 py-0.5 rounded border border-yellow-500/30 font-bold">REWARDS ENABLED</span>
+                            </div>
+                            <p class="text-[10px] text-gray-400">Minimax AI • Earn ₹2/Level</p>
+                        </div>
+                        <span class="text-xs bg-purple-500/20 text-purple-300 px-2.5 py-1 rounded-full font-semibold">30 Levels</span>
+                    </button>
+                </div>
+            </section>
+
+            <section id="level-screen" class="space-y-4 my-auto hidden flex flex-col h-full">
+                <div class="flex items-center justify-between mb-2">
+                    <button onclick="goBack()" class="w-8 h-8 rounded-full glass flex items-center justify-center"><i class="fa-solid fa-arrow-left text-xs"></i></button>
+                    <h2 id="level-screen-title" class="font-bold text-base capitalize">Levels</h2>
+                    <div class="w-8"></div>
+                </div>
+
+                <div id="levels-grid" class="grid grid-cols-5 gap-2 overflow-y-auto max-h-[420px] p-1">
+                    </div>
+            </section>
+
+            <section id="game-screen" class="space-y-4 my-auto hidden">
+                <div class="flex items-center justify-between">
+                    <button onclick="exitToLevels()" class="w-8 h-8 rounded-full glass flex items-center justify-center"><i class="fa-solid fa-arrow-left text-xs"></i></button>
+                    <div class="text-center">
+                        <span id="game-level-tag" class="text-[10px] font-bold uppercase tracking-wider text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded-full border border-purple-500/20">Pro Level 1</span>
+                    </div>
+                    <button onclick="resetGame()" class="w-8 h-8 rounded-full glass flex items-center justify-center"><i class="fa-solid fa-rotate-right text-xs"></i></button>
+                </div>
+
+                <div class="flex justify-around items-center glass p-3 rounded-2xl">
+                    <div id="player-indicator" class="flex items-center space-x-2 px-3 py-1 rounded-xl transition">
+                        <span class="text-cyan-400 font-extrabold text-lg">X</span>
+                        <span class="text-xs font-semibold">You</span>
+                    </div>
+                    <span class="text-xs text-gray-500 font-bold">VS</span>
+                    <div id="ai-indicator" class="flex items-center space-x-2 px-3 py-1 rounded-xl transition">
+                        <span class="text-pink-500 font-extrabold text-lg">O</span>
+                        <span class="text-xs font-semibold">AI</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-3 bg-slate-950/60 p-3 rounded-3xl border border-white/10 aspect-square">
+                    <button onclick="makeMove(0)" class="cell glass rounded-2xl flex items-center justify-center text-4xl font-black hover:bg-white/5"></button>
+                    <button onclick="makeMove(1)" class="cell glass rounded-2xl flex items-center justify-center text-4xl font-black hover:bg-white/5"></button>
+                    <button onclick="makeMove(2)" class="cell glass rounded-2xl flex items-center justify-center text-4xl font-black hover:bg-white/5"></button>
+                    <button onclick="makeMove(3)" class="cell glass rounded-2xl flex items-center justify-center text-4xl font-black hover:bg-white/5"></button>
+                    <button onclick="makeMove(4)" class="cell glass rounded-2xl flex items-center justify-center text-4xl font-black hover:bg-white/5"></button>
+                    <button onclick="makeMove(5)" class="cell glass rounded-2xl flex items-center justify-center text-4xl font-black hover:bg-white/5"></button>
+                    <button onclick="makeMove(6)" class="cell glass rounded-2xl flex items-center justify-center text-4xl font-black hover:bg-white/5"></button>
+                    <button onclick="makeMove(7)" class="cell glass rounded-2xl flex items-center justify-center text-4xl font-black hover:bg-white/5"></button>
+                    <button onclick="makeMove(8)" class="cell glass rounded-2xl flex items-center justify-center text-4xl font-black hover:bg-white/5"></button>
+                </div>
+            </section>
+
+            <section id="wallet-screen" class="space-y-4 my-auto hidden">
+                <div class="flex items-center justify-between mb-2">
+                    <button onclick="goBack()" class="w-8 h-8 rounded-full glass flex items-center justify-center"><i class="fa-solid fa-arrow-left text-xs"></i></button>
+                    <h2 class="font-bold text-base">My Rewards Wallet</h2>
+                    <div class="w-8"></div>
+                </div>
+
+                <div class="glass p-5 rounded-2xl text-center space-y-2 border border-yellow-500/30 bg-gradient-to-b from-yellow-500/10 to-transparent">
+                    <p class="text-xs text-gray-400">Current Balance</p>
+                    <h1 class="text-3xl font-black text-yellow-400 flex items-center justify-center space-x-1">
+                        <span>₹</span><span id="wallet-balance-large">0</span>
+                    </h1>
+                </div>
+
+                <div class="glass p-4 rounded-2xl space-y-3">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-gray-300">Request Withdrawal (UPI)</h3>
+                    <input type="text" id="withdraw-upi" placeholder="UPI ID (e.g. mobile@upi)" class="w-full px-3.5 py-2 rounded-xl bg-slate-900/60 border border-white/10 text-xs focus:outline-none focus:border-yellow-500">
+                    <input type="number" id="withdraw-amount" placeholder="Amount (Min ₹10)" class="w-full px-3.5 py-2 rounded-xl bg-slate-900/60 border border-white/10 text-xs focus:outline-none focus:border-yellow-500">
+                    <button onclick="submitWithdrawal()" class="w-full py-2.5 bg-yellow-500 hover:bg-yellow-600 text-slate-950 font-bold text-xs rounded-xl transition shadow-lg">Submit Withdrawal</button>
+                </div>
+            </section>
+
+            <section id="leaderboard-screen" class="space-y-4 my-auto hidden">
+                <div class="flex items-center justify-between mb-2">
+                    <button onclick="goBack()" class="w-8 h-8 rounded-full glass flex items-center justify-center"><i class="fa-solid fa-arrow-left text-xs"></i></button>
+                    <h2 class="font-bold text-base">Global Leaderboard</h2>
+                    <div class="w-8"></div>
+                </div>
+
+                <div id="leaderboard-list" class="space-y-2 max-h-[380px] overflow-y-auto">
+                    </div>
+            </section>
+
+            <section id="profile-screen" class="space-y-4 my-auto hidden">
+                <div class="flex items-center justify-between mb-2">
+                    <button onclick="goBack()" class="w-8 h-8 rounded-full glass flex items-center justify-center"><i class="fa-solid fa-arrow-left text-xs"></i></button>
+                    <h2 class="font-bold text-base">Profile & Stats</h2>
+                    <div class="w-8"></div>
+                </div>
+
+                <div class="glass p-4 rounded-2xl text-center space-y-2">
+                    <img id="profile-img" src="https://api.dicebear.com/6.x/bottts/svg?seed=Player" class="w-16 h-16 rounded-full mx-auto border-2 border-indigo-500">
+                    <h3 id="profile-name" class="font-bold text-sm">User</h3>
+                    <p id="profile-email" class="text-[10px] text-gray-400">user@example.com</p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 text-center">
+                    <div class="glass p-3 rounded-xl">
+                        <p class="text-[10px] text-gray-400">Total Played</p>
+                        <p id="stat-played" class="font-bold text-sm">0</p>
+                    </div>
+                    <div class="glass p-3 rounded-xl">
+                        <p class="text-[10px] text-gray-400">Total Wins</p>
+                        <p id="stat-wins" class="font-bold text-sm text-emerald-400">0</p>
+                    </div>
+                </div>
+
+                <div class="glass p-3 rounded-xl space-y-2 text-xs">
+                    <div class="flex justify-between items-center border-b border-white/10 pb-2">
+                        <a href="https://privacy-policy-tic-tac-toe.vercel.app/" target="_blank" class="text-indigo-400 hover:underline font-semibold">Privacy Policy</a>
+                        <button onclick="handleLogout()" class="text-red-400 font-bold hover:underline">Logout</button>
+                    </div>
+                    <div class="text-center pt-1">
+                        <p class="text-[10px] text-gray-400">Developer: <span class="text-indigo-300 font-bold">Aayan Industries</span></p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <div id="game-modal" class="absolute inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 z-40 hidden">
+            <div class="glass-card p-6 rounded-3xl text-center space-y-4 w-full max-w-xs border border-white/20 shadow-2xl">
+                <div id="modal-icon-box" class="w-16 h-16 rounded-2xl mx-auto flex items-center justify-center text-3xl"></div>
+                <div>
+                    <h2 id="modal-title" class="text-xl font-extrabold">Level Cleared!</h2>
+                    <p id="modal-desc" class="text-xs text-gray-300 mt-1">Awesome job!</p>
+                </div>
+                <div class="flex space-x-2">
+                    <button onclick="exitToLevels()" class="flex-1 py-2.5 glass rounded-xl text-xs font-bold">All Levels</button>
+                    <button id="modal-next-btn" onclick="playNextLevel()" class="flex-1 py-2.5 bg-indigo-600 rounded-xl text-xs font-bold">Next Level</button>
+                </div>
+            </div>
+        </div>
+
+        <nav id="app-nav" class="glass border-t border-white/10 px-6 py-2 flex justify-between items-center z-20 hidden">
+            <button onclick="switchScreen('home-screen')" class="flex flex-col items-center space-y-1 text-indigo-400">
+                <i class="fa-solid fa-house text-base"></i>
+                <span class="text-[9px] font-semibold">Home</span>
+            </button>
+            <button onclick="switchScreen('mode-screen')" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-gamepad text-base"></i>
+                <span class="text-[9px] font-semibold">Play</span>
+            </button>
+            <button onclick="switchScreen('leaderboard-screen')" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-trophy text-base"></i>
+                <span class="text-[9px] font-semibold">Ranks</span>
+            </button>
+            <button onclick="switchScreen('profile-screen')" class="flex flex-col items-center space-y-1 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-user text-base"></i>
+                <span class="text-[9px] font-semibold">Profile</span>
+            </button>
+        </nav>
+    </div>
+
     <script>
+        // --- 1. FIREBASE CONFIG ---
         const firebaseConfig = {
             apiKey: "AIzaSyBt3iYcR4SijEJqtrBlH8mNr292vakgJFQ",
             authDomain: "figo-movies.firebaseapp.com",
@@ -700,327 +407,538 @@
             messagingSenderId: "425238806262",
             appId: "1:425238806262:web:7d23814e4b550695bb76d7"
         };
-
+        
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
-        const database = firebase.database();
+        const db = firebase.database();
 
-        let allMovies = [];
-        let filteredMovies = [];
+        // --- 2. AUDIO SYNTHESIZER ---
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let soundEnabled = true;
+
+        function playSound(type) {
+            if(!soundEnabled) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if(type === 'click') {
+                    osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.05);
+                } else if(type === 'win') {
+                    osc.frequency.setValueAtTime(500, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.3);
+                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.3);
+                } else if(type === 'lose') {
+                    osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.3);
+                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.3);
+                }
+            } catch(e) {}
+        }
+
+        function toggleAudio() {
+            soundEnabled = !soundEnabled;
+            document.getElementById('sound-icon').className = soundEnabled ? 
+                "fa-solid fa-volume-high text-sm text-gray-300" : 
+                "fa-solid fa-volume-xmark text-sm text-red-400";
+        }
+
+        // --- 3. STATE & NAVIGATION (Home Back Button Close App Fix) ---
         let currentUser = null;
-        let userData = {};
-        let activeMovie = null;
-        let currentCarouselIndex = 0;
-        let selectedGenre = 'All';
-        let autoSliderTimer = null;
+        let currentScreenId = 'home-screen';
+        
+        let userData = {
+            name: "Player",
+            email: "",
+            balance: 0,
+            wins: 0,
+            played: 0,
+            unlockedLevels: { easy: 1, hard: 1, pro: 1 }
+        };
 
-        // Firebase Auth Persistent Session Setup
-        auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-            .then(() => {
-                // Pre-fetch cached data from LocalStorage during Splash screen loading
-                const cachedUserData = localStorage.getItem('figo_user_data');
-                const cachedMovies = localStorage.getItem('figo_movies_data');
+        let currentDifficulty = 'pro';
+        let currentLevel = 1;
+        let board = Array(9).fill('');
+        let gameActive = false;
+        let currentPlayer = 'X';
 
-                if (cachedUserData) {
-                    userData = JSON.parse(cachedUserData);
-                    updateUserProfileUI(userData);
-                }
+        function saveLocalData() {
+            localStorage.setItem('tictactoe_user_data', JSON.stringify(userData));
+        }
 
-                if (cachedMovies) {
-                    allMovies = JSON.parse(cachedMovies);
-                    filteredMovies = [...allMovies];
-                    initCarousel();
-                    displayMovies(filteredMovies);
-                    loadGenres();
-                }
-            })
-            .catch(err => console.error("Persistence setup error:", err));
+        function loadLocalData() {
+            const local = localStorage.getItem('tictactoe_user_data');
+            if(local) {
+                try { userData = JSON.parse(local); } catch(e){}
+            }
+        }
 
-        // Hide Splash Screen
         window.addEventListener('load', () => {
-            setTimeout(() => {
-                const splash = document.getElementById('splash-screen');
-                splash.style.opacity = '0';
-                splash.style.visibility = 'hidden';
-            }, 1500);
+            loadLocalData();
+
+            auth.onAuthStateChanged(user => {
+                setTimeout(() => {
+                    document.getElementById('splash-screen').classList.add('hidden');
+                    if(user) {
+                        currentUser = user;
+                        userData.email = user.email || "";
+                        userData.name = user.displayName || user.email.split('@')[0];
+                        syncFirebaseData();
+                        switchScreen('home-screen', false);
+                    } else {
+                        currentUser = null;
+                        switchScreen('auth-screen', false);
+                    }
+                }, 1000);
+            });
         });
 
-        // Outside Click Listener to Close Modals
-        function handleOutsideClick(event, modalId) {
-            if (event.target.id === modalId) {
-                closeModalDirect();
-            }
-        }
-
-        // Back Button popstate navigation
+        // App back navigation logic
         window.addEventListener('popstate', (e) => {
-            const openModals = document.querySelectorAll('.modal[style*="display: block"]');
-            if (openModals.length > 0) {
-                openModals.forEach(m => m.style.display = 'none');
-                stopVideo();
+            if (currentScreenId === 'home-screen' || currentScreenId === 'auth-screen') {
+                // Allows app to close / exit back to system launcher
+                return;
+            } else if (e.state && e.state.screen) {
+                showScreenElement(e.state.screen);
+            } else {
+                showScreenElement('home-screen');
             }
         });
 
-        function pushModalState() {
-            history.pushState({ modalOpen: true }, "");
+        function switchScreen(id, pushHistory = true) {
+            playSound('click');
+            if (id === 'home-screen' || id === 'auth-screen') {
+                // Keep history clear on home so pressing back exits the app
+                history.replaceState({ screen: id }, '');
+            } else if (pushHistory) {
+                history.pushState({ screen: id }, '');
+            }
+            showScreenElement(id);
         }
 
-        function closeModalDirect() {
-            const openModals = document.querySelectorAll('.modal[style*="display: block"]');
-            if (openModals.length > 0) {
-                openModals.forEach(m => m.style.display = 'none');
-                stopVideo();
-                if (history.state && history.state.modalOpen) {
+        function showScreenElement(id) {
+            currentScreenId = id;
+            const screens = ['auth-screen', 'home-screen', 'mode-screen', 'level-screen', 'game-screen', 'wallet-screen', 'leaderboard-screen', 'profile-screen'];
+            screens.forEach(s => document.getElementById(s).classList.add('hidden'));
+            
+            // Header & Bottom Navigation Control
+            const header = document.getElementById('app-header');
+            const nav = document.getElementById('app-nav');
+
+            if (id === 'auth-screen') {
+                header.classList.add('hidden');
+                nav.classList.add('hidden');
+            } else {
+                header.classList.remove('hidden');
+                nav.classList.remove('hidden');
+            }
+
+            document.getElementById(id).classList.remove('hidden');
+            
+            if(id === 'leaderboard-screen') renderLeaderboard();
+            if(id === 'level-screen') renderLevels();
+            updateUI();
+        }
+
+        function goBack() {
+            if (currentScreenId === 'home-screen' || currentScreenId === 'auth-screen') {
+                if (window.navigator && window.navigator.app) {
+                    window.navigator.app.exitApp();
+                } else {
                     history.back();
                 }
-            }
-        }
-
-        // Firebase Auth State Listener
-        auth.onAuthStateChanged((user) => {
-            currentUser = user;
-            if (user) {
-                document.getElementById('auth-guard').style.display = 'none';
-                syncUserData(user.uid);
-                loadMovies();
             } else {
-                localStorage.removeItem('figo_user_data');
-                localStorage.removeItem('figo_movies_data');
-                document.getElementById('auth-guard').style.display = 'flex';
-            }
-        });
-
-        function syncUserData(uid) {
-            database.ref('users/' + uid).on('value', (snapshot) => {
-                userData = snapshot.val() || {};
-                localStorage.setItem('figo_user_data', JSON.stringify(userData));
-                updateUserProfileUI(userData);
-            });
-        }
-
-        function updateUserProfileUI(data) {
-            const name = data.name || 'User';
-            document.getElementById('p-name').textContent = name;
-            document.getElementById('p-email').textContent = (currentUser && currentUser.email) || data.email || 'No email';
-            document.getElementById('p-mobile').textContent = data.mobile ? 'Mobile: ' + data.mobile : 'Mobile: Not added';
-            document.getElementById('p-avatar').textContent = name.charAt(0).toUpperCase();
-
-            displayMovies(filteredMovies);
-        }
-
-        function switchTab(tab) {
-            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
-            if (tab === 'login') {
-                document.querySelectorAll('.auth-tab')[0].classList.add('active');
-                document.getElementById('login-form').classList.add('active');
-            } else {
-                document.querySelectorAll('.auth-tab')[1].classList.add('active');
-                document.getElementById('signup-form').classList.add('active');
+                switchScreen('home-screen', false);
             }
         }
 
-        // Login Handler
-        document.getElementById('login-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('login-email').value.trim();
-            const password = document.getElementById('login-password').value;
-            auth.signInWithEmailAndPassword(email, password).catch(err => alert(err.message));
-        });
+        // --- 4. AUTHENTICATION ---
+        function handleEmailAuth(isSignUp) {
+            const email = document.getElementById('auth-email').value;
+            const password = document.getElementById('auth-password').value;
+            const errDiv = document.getElementById('auth-error');
 
-        // Signup Handler
-        document.getElementById('signup-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('signup-name').value.trim();
-            const email = document.getElementById('signup-email').value.trim();
-            const mobile = document.getElementById('signup-mobile').value.trim();
-            const password = document.getElementById('signup-password').value;
+            if(!email || !password) {
+                errDiv.innerText = "Email and Password are required";
+                errDiv.classList.remove('hidden');
+                return;
+            }
 
-            const authEmail = email ? email : `user_${Date.now()}@figomovies.com`;
-
-            auth.createUserWithEmailAndPassword(authEmail, password)
-                .then(cred => {
-                    return database.ref('users/' + cred.user.uid).set({
-                        name: name,
-                        email: email,
-                        mobile: mobile,
-                        createdAt: Date.now()
+            if(isSignUp) {
+                auth.createUserWithEmailAndPassword(email, password)
+                    .then(res => {
+                        userData.name = email.split('@')[0];
+                        userData.email = email;
+                        saveLocalData();
+                    }).catch(err => {
+                        errDiv.innerText = err.message;
+                        errDiv.classList.remove('hidden');
                     });
-                })
-                .then(() => alert('Account created successfully! Enjoy free movies.'))
-                .catch(err => alert(err.message));
-        });
+            } else {
+                auth.signInWithEmailAndPassword(email, password)
+                    .catch(err => {
+                        errDiv.innerText = err.message;
+                        errDiv.classList.remove('hidden');
+                    });
+            }
+        }
+
+        function handleGoogleAuth() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider);
+        }
 
         function handleLogout() {
-            auth.signOut().then(() => {
-                localStorage.removeItem('figo_user_data');
-                localStorage.removeItem('figo_movies_data');
-                closeModalDirect();
-            });
+            if(confirm("Are you sure you want to logout?")) {
+                localStorage.removeItem('tictactoe_user_data');
+                auth.signOut().then(() => {
+                    location.reload();
+                });
+            }
         }
 
-        function openPrivacyPolicy() {
-            window.location.href = "https://figo-privacy.vercel.app";
-        }
-
-        // Load Movies & Sync LocalStorage
-        function loadMovies() {
-            database.ref('movies').on('value', (snapshot) => {
-                allMovies = [];
-                if (snapshot.exists()) {
-                    snapshot.forEach(child => {
-                        let m = child.val();
-                        m.id = child.key;
-                        allMovies.unshift(m);
-                    });
+        function syncFirebaseData() {
+            if(!currentUser) return;
+            const ref = db.ref('users/' + currentUser.uid);
+            ref.on('value', snapshot => {
+                const data = snapshot.val();
+                if(data) {
+                    userData = data;
+                    saveLocalData();
+                    updateUI();
+                } else {
+                    ref.set(userData);
                 }
-                localStorage.setItem('figo_movies_data', JSON.stringify(allMovies));
-                filteredMovies = [...allMovies];
-                initCarousel();
-                displayMovies(filteredMovies);
-                loadGenres();
             });
         }
 
-        function displayMovies(movies) {
-            const grid = document.getElementById('movies-grid');
+        function updateUI() {
+            document.getElementById('user-display-name').innerText = userData.name || "Player";
+            document.getElementById('profile-name').innerText = userData.name || "Player";
+            document.getElementById('profile-email').innerText = userData.email || "";
+            document.getElementById('wallet-balance').innerText = userData.balance || 0;
+            document.getElementById('wallet-balance-large').innerText = userData.balance || 0;
+            document.getElementById('stat-played').innerText = userData.played || 0;
+            document.getElementById('stat-wins').innerText = userData.wins || 0;
+        }
+
+        // --- 5. GAME ENGINE & MINIMAX ---
+        function selectDifficulty(diff) {
+            currentDifficulty = diff;
+            switchScreen('level-screen');
+        }
+
+        function renderLevels() {
+            document.getElementById('level-screen-title').innerText = `${currentDifficulty} Levels`;
+            const grid = document.getElementById('levels-grid');
             grid.innerHTML = '';
-            movies.forEach(movie => {
-                const card = document.createElement('div');
-                card.className = 'movie-card';
-                card.innerHTML = `
-                    <span class="movie-card-tag">FREE</span>
-                    <img src="${movie.poster}" alt="${movie.title}">
-                    <div class="movie-card-info">
-                        <div class="movie-card-title">${movie.title}</div>
-                    </div>
-                `;
-                card.onclick = () => openMovieDetail(movie);
-                grid.appendChild(card);
+            
+            const unlocked = (userData.unlockedLevels && userData.unlockedLevels[currentDifficulty]) || 1;
+
+            for(let i = 1; i <= 30; i++) {
+                const isUnlocked = i <= unlocked;
+                const btn = document.createElement('button');
+                btn.className = `p-3 rounded-xl text-center font-bold text-xs transition glass ${isUnlocked ? 'bg-indigo-600/30 text-white border-indigo-500/50 hover:bg-indigo-600/50' : 'text-gray-600 opacity-50 cursor-not-allowed'}`;
+                btn.innerHTML = isUnlocked ? i : `<i class="fa-solid fa-lock text-[10px]"></i>`;
+                if(isUnlocked) btn.onclick = () => startGame(i);
+                grid.appendChild(btn);
+            }
+        }
+
+        function startGame(level) {
+            currentLevel = level;
+            board = Array(9).fill('');
+            gameActive = true;
+            currentPlayer = 'X';
+            
+            document.getElementById('game-level-tag').innerText = `${currentDifficulty} Level ${level}`;
+            document.getElementById('game-modal').classList.add('hidden');
+            switchScreen('game-screen');
+            renderBoard();
+        }
+
+        function renderBoard() {
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach((cell, i) => {
+                cell.innerText = board[i];
+                cell.className = `cell glass rounded-2xl flex items-center justify-center text-4xl font-black ${board[i] === 'X' ? 'text-cyan-400' : 'text-pink-500'}`;
             });
         }
 
-        function loadGenres() {
-            const genres = ['All', ...new Set(allMovies.map(m => m.genre).filter(Boolean))];
-            const container = document.getElementById('genre-filters');
-            container.innerHTML = '';
-            genres.forEach(g => {
-                const chip = document.createElement('div');
-                chip.className = 'genre-chip' + (g === selectedGenre ? ' active' : '');
-                chip.textContent = g;
-                chip.onclick = () => {
-                    selectedGenre = g;
-                    document.querySelectorAll('.genre-chip').forEach(c => c.classList.toggle('active', c.textContent === g));
-                    filterMovies();
-                };
-                container.appendChild(chip);
-            });
-        }
+        function makeMove(index) {
+            if(board[index] !== '' || !gameActive || currentPlayer !== 'X') return;
 
-        function filterMovies() {
-            const term = document.getElementById('search-input').value.toLowerCase();
-            filteredMovies = allMovies.filter(m => {
-                const matchSearch = m.title.toLowerCase().includes(term);
-                const matchGenre = selectedGenre === 'All' || m.genre === selectedGenre;
-                return matchSearch && matchGenre;
-            });
-            displayMovies(filteredMovies);
-        }
+            board[index] = 'X';
+            playSound('click');
+            renderBoard();
 
-        // Movie Detail Modal Opening
-        function openMovieDetail(movie) {
-            activeMovie = movie;
-            document.getElementById('m-poster').src = movie.poster;
-            document.getElementById('m-poster').style.display = 'block';
-            document.getElementById('v-container').style.display = 'none';
-            document.getElementById('v-iframe').src = '';
-            document.getElementById('m-title').textContent = movie.title;
-            document.getElementById('m-genre').textContent = movie.genre || 'Movie';
-            document.getElementById('m-desc').textContent = movie.description || 'Watch full movie now in HD format!';
-
-            document.getElementById('movie-modal').style.display = 'block';
-            pushModalState();
-        }
-
-        function playTrailer() {
-            if (!activeMovie || !activeMovie.trailerUrl) {
-                alert('Trailer unavailable.');
+            if(checkWinner(board, 'X')) {
+                handleGameEnd('win');
                 return;
             }
-            embedVideo(activeMovie.trailerUrl);
-        }
 
-        function handleWatchMovieClick() {
-            if (!activeMovie) return;
-            embedVideo(activeMovie.playUrl || activeMovie.downloadUrl);
-        }
-
-        function embedVideo(url) {
-            if (!url) {
-                alert('Video stream URL missing.');
+            if(board.every(c => c !== '')) {
+                handleGameEnd('draw');
                 return;
             }
-            let embedUrl = url;
-            if (url.includes('youtube.com/watch?v=')) {
-                embedUrl = 'https://www.youtube.com/embed/' + url.split('v=')[1].split('&')[0] + '?autoplay=1';
-            } else if (url.includes('youtu.be/')) {
-                embedUrl = 'https://www.youtube.com/embed/' + url.split('youtu.be/')[1] + '?autoplay=1';
+
+            currentPlayer = 'O';
+            setTimeout(aiTurn, 400);
+        }
+
+        function aiTurn() {
+            if(!gameActive) return;
+
+            let move;
+            if(currentDifficulty === 'easy') {
+                move = getRandomMove();
+            } else if(currentDifficulty === 'hard') {
+                move = Math.random() > 0.4 ? getBestMove() : getRandomMove();
+            } else {
+                move = getBestMove();
             }
 
-            document.getElementById('m-poster').style.display = 'none';
-            document.getElementById('v-container').style.display = 'block';
-            document.getElementById('v-iframe').src = embedUrl;
+            board[move] = 'O';
+            renderBoard();
+
+            if(checkWinner(board, 'O')) {
+                handleGameEnd('lose');
+                return;
+            }
+
+            if(board.every(c => c !== '')) {
+                handleGameEnd('draw');
+                return;
+            }
+
+            currentPlayer = 'X';
         }
 
-        function stopVideo() {
-            document.getElementById('v-iframe').src = '';
-            document.getElementById('v-container').style.display = 'none';
-            document.getElementById('m-poster').style.display = 'block';
+        function getRandomMove() {
+            let available = board.map((v, i) => v === '' ? i : null).filter(v => v !== null);
+            return available[Math.floor(Math.random() * available.length)];
         }
 
-        // Automatic Rotating 3D Carousel Slider
-        function initCarousel() {
-            const carousel = document.getElementById('carousel');
-            carousel.innerHTML = '';
-            const recent = allMovies.slice(0, 5);
-            recent.forEach(m => {
-                const item = document.createElement('div');
-                item.className = 'carousel-item';
-                item.innerHTML = `<img src="${m.poster}"><div class="carousel-item-title">${m.title}</div>`;
-                item.onclick = () => openMovieDetail(m);
-                carousel.appendChild(item);
-            });
-            updateCarousel();
-            startAutoSlider();
-        }
-
-        function updateCarousel() {
-            const items = document.querySelectorAll('.carousel-item');
-            if (!items.length) return;
-            items.forEach((item, i) => {
-                const angle = (360 / items.length) * ((i - currentCarouselIndex + items.length) % items.length);
-                const x = Math.sin(angle * Math.PI / 180) * 180;
-                const z = Math.cos(angle * Math.PI / 180) * 180 - 180;
-                item.style.transform = `translateX(${x}px) translateZ(${z}px)`;
-                item.style.opacity = z < -100 ? '0.4' : '1';
-            });
-        }
-
-        function startAutoSlider() {
-            if (autoSliderTimer) clearInterval(autoSliderTimer);
-            autoSliderTimer = setInterval(() => {
-                const items = document.querySelectorAll('.carousel-item');
-                if (items.length > 0) {
-                    currentCarouselIndex = (currentCarouselIndex + 1) % items.length;
-                    updateCarousel();
+        function getBestMove() {
+            let bestScore = -Infinity;
+            let move = 0;
+            for(let i = 0; i < 9; i++) {
+                if(board[i] === '') {
+                    board[i] = 'O';
+                    let score = minimax(board, 0, false);
+                    board[i] = '';
+                    if(score > bestScore) {
+                        bestScore = score;
+                        move = i;
+                    }
                 }
-            }, 3000);
+            }
+            return move;
         }
 
-        // Bottom Nav actions
-        function openSettings() { document.getElementById('settings-modal').style.display = 'block'; pushModalState(); }
-        function showHome() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
-        function focusSearch() { document.getElementById('search-input').focus(); }
+        const scores = { O: 10, X: -10, tie: 0 };
+
+        function minimax(boardState, depth, isMaximizing) {
+            if(checkWinner(boardState, 'O')) return scores.O - depth;
+            if(checkWinner(boardState, 'X')) return scores.X + depth;
+            if(boardState.every(c => c !== '')) return scores.tie;
+
+            if(isMaximizing) {
+                let bestScore = -Infinity;
+                for(let i = 0; i < 9; i++) {
+                    if(boardState[i] === '') {
+                        boardState[i] = 'O';
+                        let score = minimax(boardState, depth + 1, false);
+                        boardState[i] = '';
+                        bestScore = Math.max(score, bestScore);
+                    }
+                }
+                return bestScore;
+            } else {
+                let bestScore = Infinity;
+                for(let i = 0; i < 9; i++) {
+                    if(boardState[i] === '') {
+                        boardState[i] = 'X';
+                        let score = minimax(boardState, depth + 1, true);
+                        boardState[i] = '';
+                        bestScore = Math.min(score, bestScore);
+                    }
+                }
+                return bestScore;
+            }
+        }
+
+        function checkWinner(b, player) {
+            const wins = [
+                [0,1,2],[3,4,5],[6,7,8],
+                [0,3,6],[1,4,7],[2,5,8],
+                [0,4,8],[2,4,6]
+            ];
+            return wins.some(w => w.every(i => b[i] === player));
+        }
+
+        function handleGameEnd(result) {
+            gameActive = false;
+            userData.played = (userData.played || 0) + 1;
+
+            const modal = document.getElementById('game-modal');
+            const iconBox = document.getElementById('modal-icon-box');
+            const title = document.getElementById('modal-title');
+            const desc = document.getElementById('modal-desc');
+            const nextBtn = document.getElementById('modal-next-btn');
+
+            if(result === 'win') {
+                playSound('win');
+                userData.wins = (userData.wins || 0) + 1;
+
+                if(!userData.unlockedLevels) userData.unlockedLevels = { easy: 1, hard: 1, pro: 1 };
+                if(currentLevel >= userData.unlockedLevels[currentDifficulty]) {
+                    userData.unlockedLevels[currentDifficulty] = Math.min(30, currentLevel + 1);
+                }
+
+                iconBox.className = "w-16 h-16 rounded-2xl mx-auto flex items-center justify-center text-3xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+                iconBox.innerHTML = '<i class="fa-solid fa-trophy"></i>';
+                title.innerText = "VICTORY!";
+                
+                if(currentDifficulty === 'pro') {
+                    const reward = 2;
+                    userData.balance = (userData.balance || 0) + reward;
+                    desc.innerText = `You defeated Pro AI and earned ₹${reward}!`;
+                } else {
+                    desc.innerText = "Awesome moves! You completed this level.";
+                }
+
+                nextBtn.classList.remove('hidden');
+
+            } else if(result === 'lose') {
+                playSound('lose');
+                iconBox.className = "w-16 h-16 rounded-2xl mx-auto flex items-center justify-center text-3xl bg-red-500/20 text-red-400 border border-red-500/30";
+                iconBox.innerHTML = '<i class="fa-solid fa-skull"></i>';
+                title.innerText = "DEFEAT";
+                desc.innerText = "The AI outsmarted you this time!";
+                nextBtn.classList.add('hidden');
+            } else {
+                iconBox.className = "w-16 h-16 rounded-2xl mx-auto flex items-center justify-center text-3xl bg-yellow-500/20 text-yellow-400 border border-yellow-500/30";
+                iconBox.innerHTML = '<i class="fa-solid fa-handshake"></i>';
+                title.innerText = "GAME DRAW";
+                desc.innerText = "Well played! It's a tie match.";
+                nextBtn.classList.add('hidden');
+            }
+
+            saveLocalData();
+            if(currentUser) db.ref('users/' + currentUser.uid).set(userData);
+            updateUI();
+
+            setTimeout(() => { modal.classList.remove('hidden'); }, 400);
+        }
+
+        function playNextLevel() {
+            if(currentLevel < 30) {
+                startGame(currentLevel + 1);
+            } else {
+                alert("🎉 You've completed all 30 levels in this mode!");
+                exitToLevels();
+            }
+        }
+
+        function exitToLevels() {
+            gameActive = false;
+            document.getElementById('game-modal').classList.add('hidden');
+            switchScreen('level-screen');
+        }
+
+        function resetGame() {
+            startGame(currentLevel);
+        }
+
+        // --- 6. REWARDS & WALLET ---
+        function claimDailyReward() {
+            if(!currentUser) return alert('Please Login to claim daily rewards!');
+            const lastClaim = localStorage.getItem('last_claim_' + currentUser.uid);
+            const today = new Date().toDateString();
+
+            if(lastClaim === today) {
+                alert('Already claimed today! Check back tomorrow.');
+            } else {
+                localStorage.setItem('last_claim_' + currentUser.uid, today);
+                userData.balance = (userData.balance || 0) + 3;
+                saveLocalData();
+                if(currentUser) db.ref('users/' + currentUser.uid).set(userData);
+                playSound('win');
+                alert('💰 Daily Bonus Claimed: ₹3 added to wallet!');
+            }
+        }
+
+        function submitWithdrawal() {
+            if(!currentUser) return alert("Please Login to submit withdrawals!");
+            const upi = document.getElementById('withdraw-upi').value;
+            const amount = parseFloat(document.getElementById('withdraw-amount').value);
+
+            if(!upi || isNaN(amount) || amount < 10) {
+                return alert("Minimum withdrawal is ₹10. Enter a valid UPI ID.");
+            }
+
+            if(amount > (userData.balance || 0)) {
+                return alert("Insufficient balance in your wallet!");
+            }
+
+            const request = {
+                uid: currentUser.uid,
+                email: currentUser.email,
+                upi: upi,
+                amount: amount,
+                status: 'Pending',
+                timestamp: Date.now()
+            };
+
+            db.ref('withdrawals').push(request).then(() => {
+                userData.balance -= amount;
+                saveLocalData();
+                db.ref('users/' + currentUser.uid).set(userData);
+                alert("Withdrawal submitted! Pending admin approval.");
+                document.getElementById('withdraw-upi').value = '';
+                document.getElementById('withdraw-amount').value = '';
+            });
+        }
+
+        // --- 7. LEADERBOARD ---
+        function renderLeaderboard() {
+            const list = document.getElementById('leaderboard-list');
+            list.innerHTML = '<p class="text-center text-xs text-gray-500 py-4">Loading top players...</p>';
+
+            db.ref('users').orderByChild('wins').limitToLast(10).once('value', snapshot => {
+                list.innerHTML = '';
+                let players = [];
+                snapshot.forEach(child => {
+                    players.push(child.val());
+                });
+                players.reverse();
+
+                players.forEach((p, idx) => {
+                    const el = document.createElement('div');
+                    el.className = "glass p-3 rounded-xl flex items-center justify-between text-xs";
+                    el.innerHTML = `
+                        <div class="flex items-center space-x-3">
+                            <span class="font-extrabold ${idx === 0 ? 'text-yellow-400' : 'text-gray-400'}">#${idx + 1}</span>
+                            <span class="font-bold">${p.name || 'Player'}</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-emerald-400 font-bold">${p.wins || 0} Wins</span>
+                        </div>
+                    `;
+                    list.appendChild(el);
+                });
+            });
+        }
     </script>
 </body>
 </html>
